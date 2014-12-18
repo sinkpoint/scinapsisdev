@@ -114,8 +114,10 @@ class PlosoneSpider(CrawlSpider):
 		item['src_address'] = src_address
 		item['doc_id'] = doc_id[0]
 		item['title'] = title[0]
-		item['editors'] = editors[0]
-		item['pub_date'] = datetime.strptime(pub_date[0], '%B %d, %Y')			# convert to djan
+		if len(editors) > 0:
+			item['editors'] = editors[0]
+		if len(pub_date) > 0:
+			item['pub_date'] = datetime.strptime(pub_date[0], '%B %d, %Y')			# convert to djan
 		if len(copyright) > 0:
 			item['copyright'] = copyright[0]
 		if len(data_availibility) > 0:
@@ -166,19 +168,17 @@ class PlosoneSpider(CrawlSpider):
 						contentSeq = contentSeq + 1
 				headerSeq = headerSeq + 1
 		else:
-			for h3 in mnmSelector.xpath(header):
-				paragraphs = h3.xpath("""set:difference(./following-sibling::p,
-														./following-sibling::h3[1]/following-sibling::p)""").extract()
-				contentSeq = 1
-				for prgrph in paragraphs:
-					item = pubMNMItem()
-					item['doc_id'] = docHeader
-					item['section_id'] = 1
-					item['header'] = ""
-					item['content_seq'] = contentSeq
-					item['content'] = prgrph
-					item.save()
-					contentSeq = contentSeq + 1
+			paragraphs = mnmSelector.xpath("p")
+			contentSeq = 1
+			for prgrph in paragraphs:
+				item = pubMNMItem()
+				item['doc_id'] = docHeader
+				item['section_id'] = 1
+				item['header'] = ""
+				item['content_seq'] = contentSeq
+				item['content'] = prgrph.xpath("string()").extract()
+				item.save()
+				contentSeq = contentSeq + 1
 		
 		#for h4 in selector.xpath('//h4[1]'):
 		#	paragraphs = h4.xpath("""set:difference(./following-sibling::p,
