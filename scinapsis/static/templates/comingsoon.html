@@ -101,7 +101,7 @@
 
 		    <!-- Blog -->
 		    <li class="dropdown">
-		    <li><a href="{% url 'blog' %}">Blog</a></li>
+		    <li><a href="/blog/">Blog</a></li>
 		    </li>
 		    <!-- End Blog -->
 
@@ -151,14 +151,14 @@
 </div>
 
 
-<!--=== Footer Version 1 ===-->
+    <!--=== Footer Version 1 ===-->
     <div class="footer-v1">
         <div class="footer">
             <div class="container">
                 <div class="row">
                     <!-- About -->
                     <div class="col-md-5 md-margin-bottom-40">
-                        <a href="index.html"><img id="logo-footer" class="footer-logo" src="/static/assets/img/small2.png" alt=""></a>
+                        <img id="logo-footer" class="footer-logo" src="/static/assets/img/small2.png" alt="">
                         <h2>Our Mission:</h2>
                         <p>Our name "Scinapsis" comes from the world "synapsis", which means "pairing of homologous chromsomes". Our mission is to "pair", or connects, scientists to reagents they need for different experiments.</p>
                     </div><!--/col-md-3-->
@@ -170,8 +170,8 @@
                     <!-- Link List -->
                     <div class="col-md-3 md-margin-bottom-40">
                         <ul class="list-unstyled link-list">
-                            <li><a href="">Useful links:</a></li>
-                            <li><a href="">Contact Us: Info[at]scinapsis[dot]com</a></li>
+                            <li>Useful links:</li>
+                            <li><br>Contact Us: Info[at]scinapsis[dot]com</li>
                         </ul>
                     </div><!--/col-md-3-->
                     <!-- End Link List -->
@@ -185,7 +185,7 @@
                     <div class="col-md-6">
                         <p>
                             2015 &copy; All Rights Reserved.
-                           <a href="privacy2.html">Privacy Policy</a>
+                           <a href='{% url 'privacy' %}'>Privacy Policy</a>
                         </p>
                     </div>
                 </div>

@@ -105,12 +105,13 @@
 			                                    <li><a href="{% url 'home' %}">Home</a></li>
 			                            </li>
 			                           <!-- End Home -->
-
-			                           <!-- Blog -->
-			                           <li class="dropdown">
-			                                   <li><a href="{% url 'blog' %}">Blog</a></li>
-			                           </li>
-			                           <!-- End Blog -->
+						   
+						   
+                                        <!-- Blog -->
+                                        <li class="dropdown">
+					<li><a href="/blog/">Blog</a></li>                    
+                                        </li>                    
+                                        <!-- End Blog -->
 
 			                           <!-- Contacts -->
 			                           <li class="dropdown">
@@ -151,7 +152,7 @@
 		 <img src="/static/assets/img/sliders/22.jpg" class="ls-bg" alt="Slide background">
 		 <span class="ls-s-1" style=" color: #000; line-height:45px; font-weight: 200; font-size: 35px; top:30px; left: 180px; slidedirection : top; slideoutdirection : bottom; durationin : 1000; durationout : 1000;">
 		   <iframe title="YouTube video player" class="youtube-player" type="text/html"
-		   	width="600" height="350" src="http://www.youtube.com/embed/w4jBQqkVt1I"
+		   	width="600" height="350" src="http://www.youtube.com/embed/w4jBQqkVt1I?autoplay=false"
 		   	frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen>	</iframe></span>
 			</div>
 	        <!--End Third Slide-->
@@ -173,7 +174,7 @@
            </div>
        </div><!--/container-->
     <!--=== End Search Block ===-->
-
+    
 	    <!--=== Recent Posts ===-->
 	  <div class="search-block2 parallaxBg">
 	    <div class="container content-sm">
@@ -183,43 +184,24 @@
 	        </div><!--/Headline Center V2-->
 
 	        <div class="row">
-	            <div class="col-sm-4">
-	                <div class="thumbnails-v1">
+		{% for post in object_list %}
+		<div class="col-sm-4">
+	            <div class="thumbnails-v1">
 	                    <div class="thumbnail-img">
 	                        <img class="img-responsive" src="/static/assets/img/masonry/blog2.jpg" alt="">
 	                    </div>
-	                    <div class="caption">
-	                        <h3><a href="actualblog.html">Business Opportunities</a></h3>
-	                        <p>Donec id elit non mi porta gravida at eget metsit us. Fusce dapibus, justo sit amet risus etiam portapsum generators on the Internet tend to repeat predefined.</p>
-	                        <p><a class="read-more" href="actualblog.html">See More</a></p>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="col-sm-4">
-	                <div class="thumbnails-v1">
-	                    <div class="thumbnail-img">
-	                        <img class="img-responsive" src="/static/assets/img/masonry/blog3.jpg" alt="">
-	                    </div>
-	                    <div class="caption">
-	                        <h3><a href="#">Engage Customers With Unify</a></h3>
-	                        <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text, all the  ipsum generators.</p>
-	                        <p><a class="read-more" href="#">See More</a></p>
-	                    </div>
-	                </div>
-	            </div>
-	            <div class="col-sm-4">
-	                <div class="thumbnails-v1">
-	                    <div class="thumbnail-img">
-	                        <img class="img-responsive" src="/static/assets/img/masonry/blog4.jpg" alt="">
-	                    </div>
-	                    <div class="caption">
-	                        <h3><a href="#">Empower People, HCM</a></h3>
-	                        <p>Donec id elit non mi porta gravida at eget metsit us. Fusce dapibus, justo sit amet risus etiam portapsum generators on the Internet tend to repeat predefined.</p>
-	                        <p><a class="read-more" href="#">See More</a></p>
-	                    </div>
-	                </div>
-	            </div>
-	        </div> </div>
+	            <div class="caption">		
+		<h3><a href="/blog/{{post.id}}">{{ post.title }}</a></h3>
+		<div class="post_meta">
+		on {{ post.created}}
+		</div>
+		<div class="post_body">
+		{{ post.body|safe|linebreaks }}
+		</div>
+	        </div></div>
+		{% endfor %}
+	        </div>
+		</div>
 	    </div><!--/container-->
     <!--=== End Recent Posts ===-->
 

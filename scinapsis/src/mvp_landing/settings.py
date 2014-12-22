@@ -26,17 +26,43 @@ TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = []
 
+ADMINS = (
+    # ('Your Name', 'your_email@example.com'),
+)
+
+MANAGERS = ADMINS
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'db.db',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
 
 # Application definition
 
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+  'django.contrib.auth.context_processors.auth',
+  'django.core.context_processors.i18n',
+  'django.core.context_processors.request',
+]
+
+
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'signups',
+  'django.contrib.auth',
+  'django.contrib.admin',
+  'django.contrib.sites',
+  'django.contrib.sessions',
+  'django.contrib.messages',
+  'django.contrib.staticfiles',
+  'django.contrib.contenttypes',
+  'taggit',
+  'blog',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -68,7 +94,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Chicago'
 
 USE_I18N = True
 
@@ -76,6 +102,7 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID=1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
