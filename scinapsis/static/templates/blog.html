@@ -8,7 +8,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="author" content="Scinapsis">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="favicon.ico">
@@ -59,7 +59,7 @@
 	                           </li>
 	                           <li class="topbar-devider"></li>
 	                           <li>
-				    <a href="http://www.twitter.com" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+				    <a href="https://twitter.com/scinapsis" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
 		                    <i class="fa fa-twitter"></i>
 				    </a>
 	                            </li>
@@ -86,7 +86,7 @@
                         <span class="fa fa-bars"></span>
                     </button>
                     <a class="navbar-brand" href="{% url 'home' %}">
-                        <img id="logo-header" src="/static/assets/img/logo1-default(2).png" alt="Logo">
+                        <img id="logo-header" src="/static/assets/img/Scinapsis-logo-print-colour-h.svg" alt="Logo">
                     </a>
                 </div>
 
@@ -117,47 +117,47 @@
         <!-- End Navbar -->
     </div>
     <!--=== End Header ===-->
-
-    {% for post in object_list %}
-    <h2><a href="/blog/{{post.id}}">{{ post.title }}</a></h2>
-    <div class="post_meta">
-	on {{ post.created}}
-    </div>
-    <div class="post_body">
-	{{ post.body|safe|linebreaks }}
-    </div>
-    <div class="tags">
-	{% for tag in post.tags.all %}
-	<a href="/blog/tag/{{tag}}">{{tag}}</a>
-	{% if not forloop.last %}, {% endif %}
-	{% endfor %}
-    </div>
-    {% endfor %}
     
        <!--=== Content Part ===-->
        <div class="blog_masonry_3col">
-           <div class="container content grid-boxes">
+           <div class="container content grid-boxes masonry">
+           {% for post in object_list %}
                <div class="grid-boxes-in">
-                   <img class="img-responsive" src="/static/assets/img/masonry/blog2.jpg">
+                   <!--img class="img-responsive" src="/static/assets/img/masonry/blog2.jpg"-->
+                   {% if post.postimage_set.values %}
+                   <img class="img-responsive" src="/media/{{ post.postimage_set.values.0.image|slice:'2:' }}">
+                   {% endif %}
                    <div class="grid-boxes-caption">
-                       <h3><a href="actualblog.html">Spotlight Interview with Dr. Filippos Pedis</a></h3>
+                       <h3><a href="/blog/{{post.id}}">{{ post.title }}</a></h3>
                        <ul class="list-inline grid-boxes-news">
-                           <li><span>By</span> <a href="#">Tom Leung</a></li>
-                           <li>|</li>
-                           <li><i class="fa fa-clock-o"></i> Date </li>
+                           <li><i class="fa"></i>{{ post.created }}</li>
                            <li>|</li>
                            <li><a href="#"><i class="fa fa-comments-o"></i> Comments</a></li>
                        </ul>
-                       <p>For this week&#8216s Spotlight Interview, we invited Dr. Filippos Pedis at the Lunenfeld-Tanenbaum Research Institute, Toronto, to share with us his thoughts on the current research environment, and also a little about his own projects.</p>
+                       <!-- post content -->
+                       <p>
+                       {% if post.body|length > 200 %}
+                        {{ post.body|safe|linebreaks|truncatewords:25 }}<br /><a href="/blog/{{post.id}}">Read More</a>
+                       {% else %}
+                        {{ post.body|safe|linebreaks }}
+                       {% endif %}</p>
+                       <!-- post tags -->
+                       <p>{% for tag in post.tags.all %}
+                          <a href="/blog/tag/{{tag}}">{{tag}}</a>
+                          {% if not forloop.last %}, {% endif %}{% endfor %}
+                       </p>
                    </div>
                </div>
-
+           {% endfor %}
+                <!--
                <div class="grid-boxes-in">
               	                <iframe title="YouTube video player" class="youtube-player" type="text/html"
 			  					width="100%" height="305" scrolling="no" src="http://www.youtube.com/embed/w4jBQqkVt1I"
 			  					frameborder="0" ebkitAllowFullScreen mozallowfullscreen allowFullScreen>
 					</iframe>
               </div>
+              -->
+
            </div><!--/container-->
        </div>
     <!--=== End Content Part ===-->

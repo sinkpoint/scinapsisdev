@@ -17,14 +17,14 @@ class BlogFeed(Feed):
     
     def item_link(self, item):
         return u"/blog/%d" % item.id
-    
+
 urlpatterns = patterns('blog.views',
     url(r'^$', ListView.as_view(
-        queryset=Post.objects.all().order_by("-created")[:3],
-                                             template_name="base.html")),
-    
+            queryset=Post.objects.all().order_by("-created"),
+            template_name="blog.html"), name='index'),
+
     url(r'^(?P<pk>\d*)$', DetailView.as_view(
-        model=Post, template_name="post.html")),
+        model=Post, template_name="post.html"), name="post"),
     
     url(r'^archives/$', ListView.as_view(
         queryset=Post.objects.all().order_by("-created"),

@@ -63,6 +63,7 @@ INSTALLED_APPS = (
   'django.contrib.contenttypes',
   'taggit',
   'blog',
+  'tinymce',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -121,3 +122,11 @@ if DEBUG:
     STATICFILES_DIRS = (
        os.path.join(os.path.dirname(BASE_DIR), "static", "static"),
     )
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL,'tiny_mce')
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,paste,searchreplace",
+    'theme': "advanced",
+    'remove_trailing_brs': 'false',
+}
+TINYMCE_SPELLCHECKER = True
