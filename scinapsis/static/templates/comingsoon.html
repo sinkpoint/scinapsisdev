@@ -10,38 +10,40 @@
 
     <link rel="stylesheet" href="/static/assets/css/themes/headers/default.css" id="style_color-header-1">
 
-    {% endblock %}
+{% endblock %}
+
 {% block base_content %}
 <!--=== Content Part ===-->
 <div class="container">
     <!-- Coming Soon Content -->
     <div class="row">
-	     {% if messages %}]
-	     <div class ='col-md-12'>
-	    	{% for message in messages %}
-		<p{% if message.tags == "success" %} class="alert alert-success"{% endif %}>{{ message }}</p>
-		{% endfor %}
-	     </div>
-	     </div>
-	      {% endif %}
-
-        <div class="col-md-12 coming-soon">
-            <h1>Coming Soon!</h1>
-            <p>Stay tuned for the exciting alpha launch...</p><br>
-            <form>
-                <div class="input-group col-md-4 col-md-offset-4">
-		<form method='POST' action=''> {% csrf_token %}
-                {{form.as_p}} <input type= "submit" class ="btn btn-success">
-		</form>
-                </div><!-- /input-group -->
-            </form>
+    {% if messages %}]
+        <div class='col-md-12'>
+            {% for message in messages %}
+                <p {% if message.tags == "success" %} class="alert alert-success" {% endif %}>{{ message }}</p>
+            {% endfor %}
         </div>
+    {% endif %}
     </div>
 
-    <!-- Coming Soon Plugn -->
-    <div class="coming-soon-plugin">
-        <div id="defaultCountdown"></div>
+    <div class="col-md-12 coming-soon">
+        <h1>Coming Soon!</h1>
+        <p>Stay tuned for the exciting alpha launch...</p>
+        <br />
+        <form>
+            <div class="input-group col-md-4 col-md-offset-4">
+                <form method='POST' action=''> {% csrf_token %} {{form.as_p}}
+                    <input type="submit" class="btn btn-success">
+                </form>
+            </div>
+            <!-- /input-group -->
+        </form>
     </div>
+</div>
+
+<!-- Coming Soon Plugn -->
+<div class="coming-soon-plugin">
+    <div id="defaultCountdown"></div>
 </div>
 
 {% endblock %}

@@ -10,8 +10,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'signups.views.home', name='home'),
-    url(r'^blog/', include ('blog.urls')),
-    #url(r'^$', 'signups.views.blogs', name='blogs'),
+    # url(r'^blog/', include ('blog.urls')),
+    url(r'^blog/', 'signups.views.blog', name='blog'),
     url(r'^privacy-statement/$', 'signups.views.privacy', name='privacy'),
     url(r'^contact/$', 'signups.views.contact', name='contact'),
     url(r'^coming-soon/$', 'signups.views.comingsoon', name='comingsoon'),
