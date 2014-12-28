@@ -2,4 +2,9 @@
 
 .footer {
     border-top: 1px solid #ccc;
+    background: none;
+}
+
+.footer-v1 {
+    background: url(/static/images/footer_bg.png) fixed repeat-y transparent;
 }

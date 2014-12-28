@@ -9,7 +9,7 @@
 	margin-bottom: 0px;
     border-bottom: 1px solid #ccc;
     border-top: 1px solid #ccc;
-    background-image: url('../../assets/img/bg/white_shadow_mid.png'), url('../../assets/img/bg/search_bg_side1.svg');
+    background-image: url('../../images/white_shadow_mid.png'), url('../../images/search_bg_side1.svg');
     background-position: center;
     background-repeat: repeat-y, repeat;
     background-attachment: fixed;
