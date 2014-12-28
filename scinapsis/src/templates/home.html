@@ -90,7 +90,9 @@
             <div class="col-sm-4">
                 <div class="thumbnails-v1">
                     <div class="thumbnail-img">
-                        <img class="img-responsive" src="/static/assets/img/masonry/blog2.jpg" alt="">
+                        {% if post.postimage_set.values %}
+                            <img class="img-responsive" src="/media/{{ post.postimage_set.values.0.image|slice:'2:' }}">
+                        {% endif %}
                     </div>
                     <div class="caption">
                         <h3><a href="/blog/{{post.id}}">{{ post.title }}</a></h3>
