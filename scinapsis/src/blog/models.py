@@ -8,6 +8,14 @@ class Post(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     tags = TaggableManager ()
-        
+    
     def __unicode__(self):
         return self.title
+
+class PostImage(models.Model):
+    """ Used for admin image uploading. """
+    post = models.ForeignKey(Post)
+    image = models.ImageField()
+
+    def to_str(self, image):
+        return image.value_to_string

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+    <title>Scinpasis</title>
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="/static/assets/plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="/static/assets/plugins/line-icons/line-icons.css">
+    <link rel="stylesheet" href="/static/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+    <!-- CSS Theme -->
+    <link rel="stylesheet" href="/static/assets/css/theme-colors/default.css">
+
+    <!-- CSS Customization -->
+    <link rel="stylesheet" href="/static/assets/css/custom.css">
+</head>
+
+<body class="boxed-layout container">
+<div class="wrapper">
+     <!--=== Header ===-->
+	    <div class="header">
+	        <!-- Topbar -->
+	        <div class="topbar">
+	            <div class="container">
+	                <!-- Topbar Navigation -->
+	                <ul class="loginbar pull-right">
+	                    <li class="languagesSelector">
+	                        <i class="fa fa-globe"></i>
+	                        <a>Languages</a>
+	                        <ul class="languages">
+	                            <li class="active">
+	                                <a href="#">English <i class="fa fa-check"></i></a>
+	                            </li>
+	                            <li><a href="#">Chinese</a></li>
+	                        </ul>
+	                    </li>
+	                    <li class="topbar-devider"></li>
+	                    <li><a href="/admin/">Login</a></li>
+	                    <li class="topbar-devider"></li>
+			    <li>
+			    <a href="http://www.facebook.com" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Facebook">
+				<i class="fa fa-facebook"></i>
+				</a>
+				</li>
+				<li class="topbar-devider"></li>
+				<li>
+				<a href="https://twitter.com/scinapsis" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Twitter">
+				<i class="fa fa-twitter"></i>
+				</a>
+				</li>
+				<li class="topbar-devider"></li>
+				<li>
+				<a href="http://www.linkedin.com" target="_blank" class="tooltips" data-toggle="tooltip" data-placement="top" title="" data-original-title="Linkedin">
+				<i class="fa fa-linkedin"></i>
+				</a>
+				</li>
+                    <!-- End Social Links -->
+	                </ul>
+	                <!-- End Topbar Navigation -->
+	            </div>
+	        </div>
+        <!-- End Topbar -->
+
+		<!-- Navbar -->
+        <div class="navbar navbar-default mega-menu" role="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'home' %}">
+                        <img id="logo-header" src="/static/assets/img/Scinapsis-logo-print-colour-h.svg" alt="Logo">
+                    </a>
+                </div>
+
+               <!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-responsive-collapse">
+		<ul class="nav navbar-nav">
+		<!-- Home -->
+		<li class="dropdown">
+		<li><a href="{% url 'home' %}">Home</a></li>
+		</li>
+		<!-- End Home -->
+
+		<!-- Blog -->
+		<li class="dropdown">
+		<li><a href="/blog/">Blog</a></li>
+		</li>
+		<!-- End Blog -->
+
+		<!-- Contacts -->
+		<li class="dropdown">
+		<li><a href="{% url 'contact' %}">Contact Us</a></li>
+		</li>
+		<!-- End Contacts -->
+		</ul>
+                </div><!--/navbar-collapse-->
+            </div>
+        </div>
+        <!-- End Navbar -->
+    </div>
+    <!--=== End Header ===-->
+
+    <!--=== Breadcrumbs ===-->
+    <div class="breadcrumbs">
+        <div class="container">
+            <h1 class="pull-left">Privacy & Use of Cookies</h1>
+        </div>
+    </div><!--/breadcrumbs-->
+    <!--=== End Breadcrumbs ===-->
+
+    <!--=== Content Part ===-->
+	    <div class="container content">
+	    	<div class="row-fluid privacy">
+	            <p class="lead">What is a cookie?</p>
+	            <p>A cookie is a small text file placed on your computer by a website to store a small amount of information.  They cannot be used to identify you and they cannot be used to put viruses or malware on your computer.  For more information we suggest reading the <a href="http://en.wikipedia.org/wiki/HTTP_cookie" target = "new"> Wikipedia</a> article and the <a href="http://www.bbc.co.uk/webwise/guides/about-cookies" target = "new"> BBC's guide to cookies</a>.</p><br />
+				<p class="lead">Why do we use cookies?</p>
+	            <p>Scinpasis's website uses cookies to improve your experience and provide us with information to make further improvements.  Generally cookies are used for two purposes: to remember a preference or setting that you have specified on the site (e.g. to remember that you are logged in) or to measure how people interact with the site.  We only set cookies which we think are necessary.</p><br />
+				<p class="lead">First Party Cookies</p>
+	            <p>These are cookies we set and we are in control of.</p><br />
+	            <p>- _Scinpasis_session: This cookie will be set when you login.  No personal information is stored.</p><br />
+				<p class="lead">Third Party Cookies</p>
+	            <p>These are cookies set by tools and services we use to deliver our website. Scinapsis does not have control over third party content providers use of cookies.  For more information on the use of such cookies, please refer to the privacy and cookie policy on the 3rd party's website.</p><br />
+	            <p>Scinapsis is aware of the following 3rd party cookies being set: </p><br />
+	            <p>- __utma, __utmb, __utmc, __utmz: These are set by Google Analytics, a service which lets us collect usage data about our website. All data is collected anonymously and presented in aggregate.</p><br />
+				<p class="lead">Controlling Cookies</p>
+				<p>If you don't want cookies to be set on your computer, you can change your browser's preferences to alert you to a new cookie or block all cookies immediately.  You can also use tools within your browser to delete cookies that have been set, often on a per-site basis.</p><br />
+				<p>Preventing cookies from being set will likely degrade your browsing experience and cause many websites and features to not work correctly.</p><br />
+				<p>For information on how to manage cookies in various browsers and on different devices visit <a href="http://www.aboutcookies.org" target = "new">www.aboutcookies.org</a>.</p><br /><br />
+				<p class="lead">National Library of Medicine (NLM)</p>
+	            <p>NLM represents that its data were formulated with a reasonable standard of care. Except for this representation, NLM makes no representation or warranties, expressed or implied. This includes, but is not limited to, any implied warranty of merchantability or fitness for a particular purpose, with respect to the NLM data, and NLM specifically disclaims any such warranties and representations.</p><br />
+	            <p class="lead">NLM copyright statement </p>
+			    <p>NLM data are produced by a U.S. Government agency and include works of the United States Government that are not protected by U.S. copyright law but may be protected by non-US copyright law, as well as abstracts originating from publications that may be protected by U.S. copyright law.</p><br />
+	           	<p>NLM assumes no responsibility or liability associated with use of copyrighted material, including transmitting, reproducing, redistributing, or making commercial use of the data. NLM does not provide legal advice regarding copyright, fair use, or other aspects of intellectual property rights. Persons contemplating any type of transmission or reproduction of copyrighted material such as abstracts are advised to consult legal counsel.</p><br />
+	           </div><!--/row-fluid-->
+	    </div><!--/container-->
+    <!--=== End Content Part ===-->
+
+
+    </div><!--/container-->
+    <!-- End Content Part -->
+
+    <!--=== Footer Version 1 ===-->
+    <div class="footer-v1">
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <!-- About -->
+                    <div class="col-md-5 md-margin-bottom-40">
+                        <img id="logo-footer" class="footer-logo" src="/static/assets/img/small2.png" alt="">
+                        <h2>Our Mission:</h2>
+                        <p>Our name "Scinapsis" comes from the world "synapsis", which means "pairing of homologous chromsomes". Our mission is to "pair", or connects, scientists to reagents they need for different experiments.</p>
+                    </div><!--/col-md-3-->
+                    <!-- End About -->
+ 				 <!-- Link List -->
+                    <div class="col-md-3 md-margin-bottom-40">
+                    </div><!--/col-md-3-->
+                    <!-- End Link List -->
+                    <!-- Link List -->
+                    <div class="col-md-3 md-margin-bottom-40">
+                        <ul class="list-unstyled link-list">
+                            <li>Useful links:</li>
+                            <li><br>Contact Us: Info[at]scinapsis[dot]com</li>
+                        </ul>
+                    </div><!--/col-md-3-->
+                    <!-- End Link List -->
+                </div>
+            </div>
+        </div><!--/footer-->
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            2015 &copy; All Rights Reserved.
+                           <a href='{% url 'privacy' %}'>Privacy Policy</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div><!--/copyright-->
+    </div>
+    <!--=== End Footer Version 1 ===-->
+</div><!--/wrapper-->
+
+<!-- JS Global Compulsory -->
+<script type="text/javascript" src="/static/assets/plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/jquery/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="/static/assets/plugins/back-to-top.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/revolution-slider/rs-plugin/js/jquery.themepunch.tools.min.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/revolution-slider/rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/parallax-slider/js/modernizr.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/parallax-slider/js/jquery.cslider.js"></script>
+<!-- JS Customization -->
+<script type="text/javascript" src="/static/assets/js/custom.js"></script>
+<!-- JS Page Level -->
+<script type="text/javascript" src="/static/assets/js/app.js"></script>
+<script type="text/javascript" src="/static/assets/js/plugins/revolution-slider.js"></script>
+<script type="text/javascript" src="/static/assets/js/plugins/parallax-slider.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+        App.initSliders();
+        RevolutionSlider.initRSfullWidth();
+        ParallaxSlider.initParallaxSlider();
+    });
+</script>
+<!--[if lt IE 9]>
+    <script src="/static/assets/plugins/respond.js"></script>
+    <script src="/static/assets/plugins/html5shiv.js"></script>
+    <script src="/static/assets/js/plugins/placeholder-IE-fixes.js"></script>
+<![endif]-->
+
+</body>
+</html>
