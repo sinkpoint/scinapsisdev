@@ -1,5 +1,11 @@
 /* Add here all your css styles (customizations) */
+body {
+    color: #333;
+}
 
+.post_meta {
+    color: #777;
+}
 .footer {
     border-top: 1px solid #ccc;
     background: none;
@@ -7,4 +13,9 @@
 
 .footer-v1 {
     background: url(/static/images/footer_bg.png) fixed repeat-y transparent;
+}
+
+.caption h3, .grid-boxes-caption h3 {
+    font-size: 20px !important;
+    font-weight: bold !important;
 }

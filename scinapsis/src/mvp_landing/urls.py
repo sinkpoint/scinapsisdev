@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^$', ListView.as_view(
             queryset=Post.objects.all().order_by("-created")[:3],
             template_name="home.html"), name='home'),
-    # url(r'^blog/', include('blog.urls')),
+
     url(r'^privacy-statement/$', 'signups.views.privacy', name='privacy'),
     url(r'^blog/', include ('blog.urls', namespace='blog')),
     url(r'^contact/$', 'signups.views.contact', name='contact'),

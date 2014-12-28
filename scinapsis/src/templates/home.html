@@ -18,6 +18,8 @@
 
     <!-- CSS Theme -->
     <link rel="stylesheet" href="/static/assets/css/theme-colors/purple.css">
+
+    <link rel="stylesheet" href="/static/css/custom.css">
 {% endblock %}
 
 {% block base_content %}
@@ -96,7 +98,13 @@
                             on {{ post.created}}
                         </div>
                         <div class="post_body">
+                        <p>
+                        {% if post.body|length > 200 %}
+                            {{ post.body|safe|linebreaks|truncatewords:25 }}
+                        <br /><a href="/blog/{{post.id}}">Read More</a>
+                        {% else %}
                             {{ post.body|safe|linebreaks }}
+                        {% endif %}</p>
                         </div>
                     </div>
                 </div>
@@ -115,11 +123,13 @@
 <script type="text/javascript" src="/static/assets/plugins/layer-slider/layerslider/js/greensock.js"></script>
 <script type="text/javascript" src="/static/assets/plugins/layer-slider/layerslider/js/layerslider.transitions.js"></script>
 <script type="text/javascript" src="/static/assets/plugins/layer-slider/layerslider/js/layerslider.kreaturamedia.jquery.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/masonry/jquery.masonry.min.js"></script>
 <!-- JS Customization -->
 <script type="text/javascript" src="/static/assets/js/custom.js"></script>
 <!-- JS Page Level -->
 <script type="text/javascript" src="/static/assets/js/app.js"></script>
 <script type="text/javascript" src="/static/js/plugins/layer-slider.js"></script>
+<script type="text/javascript" src="/static/assets/js/pages/blog-masonry.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function() {
         App.init();
