@@ -8,7 +8,7 @@ class Post(models.Model):
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     tags = TaggableManager ()
-    
+
     def __unicode__(self):
         return self.title
 
@@ -19,3 +19,11 @@ class PostImage(models.Model):
 
     def to_str(self, image):
         return image.value_to_string
+
+class Comment(models.Model):
+    ## tentative model for comments
+    name = models.TextField(max_length=200)
+    email = models.EmailField()
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    ip_addr = models.GenericIPAddressField()
