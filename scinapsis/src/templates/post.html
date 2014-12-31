@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+    {% block metadesc %}
+    {% if post.meta %}
+    <meta name="description" content="{{ post.meta }}">
+    {% endif %}
+    {% endblock %}
+
     {% block css %}
     <!-- CSS Page Style -->
     <link rel="stylesheet" href="assets/css/pages/blog_magazine.css">
