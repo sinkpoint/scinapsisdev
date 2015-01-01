@@ -2,6 +2,7 @@
 
     {% block metadesc %}
     {% if post.meta %}
+    <meta property="og:title" content="Scinapsis - {{ post.title }}">
     <meta name="description" content="{{ post.meta }}">
     {% endif %}
     {% endblock %}
