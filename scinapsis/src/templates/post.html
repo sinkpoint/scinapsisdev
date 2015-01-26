@@ -21,12 +21,20 @@
 
 <!--=== Content ===-->
 <div class="container content blog-page blog-item">
+
     <!--=== Blog ===-->
-    <div class="blog margin-botom-40">
+
+    <div class="blog margin-botom-40 col-md-9">
         {% if post.postimage_set.values %}
 
         <!--- Blog title -->
         <h2>{{ post.title }}</h2>
+
+        {% if banner %}
+            <div class="blog-img">
+                <img class="img-responsive" src="/media/{{ banner.0.image|slice:'2:'}}" alt="">
+            </div>
+        {% endif %}
         <!-- Blog meta -->
         <div class="blog-post-tags">
             <ul class="list-unstyled list-inline blog-info">
@@ -35,30 +43,33 @@
                 <li><i class="fa fa-comments">Comments</i>
                 </li>
                 <li><i class="fa fa-tags">
-    {% for tag in post.tags.all %}
-      <a href="/blog/tag/{{tag}}">{{tag}}</a>
-      {% if not forloop.last %}, {% endif %}
-    {% endfor %}</i>
+                    {% for tag in post.tags.all %}
+                      <a href="/blog/tag/{{tag}}">{{tag}}</a>
+                      {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                    </i>
                 </li>
             </ul>
+
 
             <!-- Blog Picture(s) -->
             <div class="blog-img" style="max-width:40%; float:right; margin: 2em; border: 1px solid #555;">
                 <!-- contraint for image size -->
-                {% if post.postimage_set.values|length > 1 %}
+                {% if images|length > 1 %}
                 <!-- More than one image -->
                 <div class="carousel slide carousel-v1" id="myCarousel">
                     <div class="carousel-inner">
-                        {% for imgdata in post.postimage_set.values %} {% if forloop.counter == 1 %}
-                        <div class="item active">
+                        {% for imgdata in images %}
+                            {% if forloop.counter == 1 %}
+                            <div class="item active">
                             {% else %}
                             <div class="item">
-                                {% endif %}
+                            {% endif %}
                                 <!-- Note: filenames are saved in "./fname.jpg" format, require stripping "./" -->
                                 <img class="img-responsive" src="/media/{{ imgdata.image|slice:'2:' }}" alt="">
                                 <div class="carousel-caption"></div>
                             </div>
-                            {% endfor %}
+                        {% endfor %}
                         </div>
                         <div class="carousel-arrow">
                             <a data-slide="prev" href="#myCarousel" class="left carousel-control">
@@ -78,7 +89,16 @@
 
                 <!-- Blog content -->
             </div>
-            <p>{{ post.body|safe|linebreaks }}</p>
+
+            <p>
+
+            {{ post.body | slice:':body_half_len' | safe | linebreaks }}
+            {% if post.execerpt %}
+                    <div class="tag-box tag-box-v2" style="float: left; margin: 1em;">
+                        <p>{{ post.execerpt|safe|linebreaks }}</p>
+                    </div>
+            {% endif %}
+            {{ post.body| slice:'body_half_len:' | safe | linebreaks }}</p>
             <!-- Comment Form
             <hr style="clear:both" />
 
@@ -114,9 +134,11 @@
             </div>
             End Comment Form -->
         </div>
-
-    </div>
     <!--== Blog end ==-->
+            {% include "sidebar.html" %}
+    </div>
+
+
 </div>
 <!--=== Content end ==-->
 

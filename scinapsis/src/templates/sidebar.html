@@ -1,0 +1,24 @@
+            <!-- Right Sidebar -->
+            <div class="col-md-3 magazine-page">
+                <!-- Search Bar -->
+                <div class="headline headline-md"><h2>Search</h2></div>            
+                <div class="input-group margin-bottom-40">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
+                        <button class="btn-u" type="button">Go</button>
+                    </span>
+                </div>
+                <!-- End Search Bar -->
+
+                <!-- Blog Tags -->
+                <div class="headline headline-md"><h2>Article Tags</h2></div>
+                <ul class="list-unstyled blog-tags margin-bottom-30">
+                    {% for tag in tags %}
+                    <li><a href="#"><i class="fa fa-tags"></i> {{tag}}</a></li>
+                    {% endfor %}
+                
+                </ul>
+                <!-- End Blog Tags -->
+                <!-- End Blog Latest Tweets -->
+            </div>
+            <!-- End Right Sidebar -->

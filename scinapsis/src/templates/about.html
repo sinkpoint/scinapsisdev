@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block css %}
+	    <link rel="stylesheet" href="/static/assets/plugins/flexslider/flexslider.css">
+
+	    <!-- CSS Page Style -->
+	    <link rel="stylesheet" href="/static/assets/css/pages/page_contact.css">
+
+	    <!-- CSS Theme -->
+	    <link rel="stylesheet" href="/static/assets/css/theme-colors/purple.css">
+
+	    <!-- CSS Customization -->
+	    <link rel="stylesheet" href="/static/assets/css/custom.css">
+        {% endblock %}
+
+{% block base_content %}
+
+<!--=== Breadcrumbs ===-->
+<div class="breadcrumbs">
+    <div class="container">
+        <h1 class="pull-left">About Scinapsis</h1>
+    </div>
+</div>
+<!--/breadcrumbs-->
+<!--=== End Breadcrumbs ===-->
+
+<!--=== Content Part ===-->
+<div class="container content">
+<p>Scinapsis is founded by a group of life science researchers at the University of Toronto.  We understand and share difficulties common to fellow researchers.  We are passionate about increasing productivity of research by creating new tools to accelerate discoveries.</p>
+
+    <div class="headline"><h2>Search By Evidence</h2></div>
+
+
+
+            <p><strong>Peer-reviewed publications are the new catalog for laboratory consumables.</strong>
+            Researchers often look for evidence-of-use in literature before buying a new antibody or reagent.  Scinapsis is a FREE service for scientists, providing <strong>quick</strong> and <strong>easy</strong> access to evidence-of-use for different antibodies and reagents in peer-reviewed literature.  Through Scinapsis, scientists will be able to search antibodies or reagents by evidence, as opposed to catalog number alone.</p>
+
+
+
+    <!--/row-->
+
+        <!-- Meer Our Team -->
+        <div class="headline"><h2>Meet Our Team</h2></div>
+        <div class="row team">
+            <div class="col-sm-3">
+                <div class="thumbnail-style">
+                    <img class="img-responsive" src="assets/img/team/1.jpg" alt="" />
+                    <h3><a>Tom Leung</a> <small>Founder</small></h3>
+                    <p>Tom is a PhD Candidate in Laboratory Medicine at University of Toronto in Epigenetics.  He is passionate about developing methods to increase efficiency within science research and help fellow scientists uncover new discoveries through increased productivity.</p>
+                    <!--
+                    <ul class="list-unstyled list-inline team-socail">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+                    -->
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="thumbnail-style">
+                    <img class="img-responsive" src="assets/img/team/4.jpg" alt="" />
+                    <h3><a>Michael Wong</a> <small>Co-founder</small></h3>
+                    <p>Michael has over 8 years of Information Technology and data warehousing experience in the logistics and banking industries.  His expertise lies in large data analysis, financial modeling and business intelligence.</p>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="thumbnail-style">
+                    <img class="img-responsive" src="assets/img/team/3.jpg" alt="" />
+                    <h3><a>David Qixiang Chen</a> <small>Co-founder</small></h3>
+                    <p>David is a PhD Candidate in Institute of Medical Science at University of Toronto. He is also a Software Engineering specialist
+                       experienced with computer graphics. He is passionate about combining computing, neuroscience and medicine.</p>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="thumbnail-style">
+                    <img class="img-responsive" src="assets/img/team/2.jpg" alt="" />
+                    <h3><a>Prita Patel</a> <small>Social Media Correspondence</small></h3>
+                    <p>Prital is a PhD Candidate in Medical Biophysics at University of Toronto.  She is currently the Social Media Director at the Life Sciences Career Development Society at UofT.  Prital enjoys bringing engaging content to users through social media.</p>
+                </div>
+            </div>
+
+        </div><!--/team-->
+        <!-- End Meer Our Team -->
+
+</div>
+<!--/container-->
+
+<!--=== End Content Part ===-->
+
+{% endblock %}
+
+{% block js %}
+<!-- JS Implementing Plugins -->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="/static/assets/plugins/gmap/gmap.js"></script>
+<script type="text/javascript" src="/static/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+<!-- JS Customization -->
+<script type="text/javascript" src="/static/assets/js/custom.js"></script>
+<!-- JS Page Level -->
+<script type="text/javascript" src="/static/assets/js/app.js"></script>
+<script type="text/javascript" src="/static/assets/js/pages/page_contacts.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+        App.initSliders();
+        ContactPage.initMap();
+    });
+</script>
+{% endblock %}
