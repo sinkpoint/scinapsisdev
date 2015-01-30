@@ -6,11 +6,11 @@ from blog.models import Post
 class HomeBlogView(ListView):
     template_name = 'home.html'
     model = Post
-    queryset=Post.objects.filter(pinned=False).order_by("-created")[:3]
+    queryset=Post.objects.select_related().filter(pinned=False, postimage__is_cover=True).order_by("-created")[:3]
 
     def get_context_data(self, **kwargs):
         context = super(HomeBlogView, self).get_context_data(**kwargs)
-        context['pinned'] = Post.objects.filter(pinned=True)
+        context['pinned'] = Post.objects.select_related().filter(pinned=True, postimage__is_cover=True)
         return context
 
 class ContactView(FormView):

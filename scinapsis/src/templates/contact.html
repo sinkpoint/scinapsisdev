@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load bootstrap %}
 {% block css %}
     <link rel="stylesheet" href="/static/assets/plugins/css/animate.css">
     <link rel="stylesheet" href="/static/assets/plugins/countdown/css/countdown.css">
@@ -20,24 +20,13 @@
                 <div class="headline"><h2>Contact Scinapsis</h2></div>
                 <p>Want to drop us a line? Feel free to inqure about our product and services below. </p>
 
-                <form method='POST' action=''> {% csrf_token %} {{form.as_p}}
-                    <p><input type="submit" class="btn btn-success"></p>
+                <form method='POST' action=''> {% csrf_token %}
+                {{form|bootstrap}}
+                    <p><input type="submit" class="btn-u btn-success"></p>
                 </form>
 
             </div><!--/col-md-9-->
 
-            <div class="col-md-3">
-                <!-- Contacts -->
-                <div class="headline"><h2>Contacts</h2></div>
-                <ul class="list-unstyled who margin-bottom-30">
-                    <li><a href="#"><i class="fa fa-home"></i>5B Streat, City 50987 New Town US</a></li>
-                    <li><a href="#"><i class="fa fa-envelope"></i>info@example.com</a></li>
-                    <li><a href="#"><i class="fa fa-phone"></i>1(222) 5x86 x97x</a></li>
-                    <li><a href="#"><i class="fa fa-globe"></i>http://www.example.com</a></li>
-                </ul>
-                <!-- End Contacts -->
-
-            </div><!--/col-md-3-->
         </div><!--/row-->
 </div>
 

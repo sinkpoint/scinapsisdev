@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import ListView
 from blog.models import Post
 from django.contrib.syndication.views import Feed
-from blog.views import PostDetailView
+from blog.views import PostDetailView, PostIndexView
 
 class BlogFeed(Feed):
     title = "MySite"
@@ -20,9 +20,7 @@ class BlogFeed(Feed):
         return u"/blog/%d" % item.id
 
 urlpatterns = patterns('blog.views',
-    url(r'^$', ListView.as_view(
-            queryset=Post.objects.all().order_by("-created"),
-            template_name="blog.html"), name='index'),
+    url(r'^$', PostIndexView.as_view(), name='index'),
 
     url(r'^(?P<pk>\d*)$', PostDetailView.as_view(), name="post"),
 

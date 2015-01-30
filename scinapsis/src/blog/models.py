@@ -31,8 +31,11 @@ class Post(models.Model):
 class PostImage(models.Model):
     """ Used for admin image uploading. """
     post = models.ForeignKey(Post)
-    image = models.ImageField()
+    image = models.ImageField(blank=True)
+    url = models.URLField(default='',blank=True)
     is_banner = models.BooleanField(default=False)
+    is_cover = models.BooleanField(default=False)
+    is_video = models.BooleanField(default=False)
 
     def to_str(self, image):
         return image.value_to_string

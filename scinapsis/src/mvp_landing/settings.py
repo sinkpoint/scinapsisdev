@@ -44,6 +44,8 @@ DATABASES = {
     }
 }
 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
 
 # Application definition
 
@@ -66,6 +68,7 @@ INSTALLED_APPS = (
   'taggit',
   'blog',
   'tinymce',
+  'bootstrapform'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,12 +139,12 @@ else:
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL,'tiny_mce')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "table,spellchecker,contextmenu,paste,searchreplace,save",
+    'plugins': "table,spellchecker,contextmenu,paste,searchreplace,save,youtube",
     'theme': "advanced",
     'remove_trailing_brs': 'false',
     'theme_advanced_font_sizes': "10px,12px,13px,14px,16px,18px,20px",
     'font_size_style_values': "12px,13px,14px,16px,18px,20px",
     'theme_advanced_buttons1':"bold,italic,underline,strikethrough,sub,sup,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,formatselect,fontselect,fontsizeselect",
-    'theme_advanced_buttons2':"bullist,numlist,outdent,indent,ltr,rtl,separator,link,unlink,anchor,image,separator,table,insertdate,inserttime,advhr,emotions,media,charmap,separator,pasteword,separator,undo,redo",
+    'theme_advanced_buttons2':"bullist,numlist,outdent,indent,ltr,rtl,separator,link,unlink,anchor,image,separator,table,insertdate,inserttime,advhr,emotions,media,youtube,charmap,code,separator,pasteword,separator,undo,redo",
 }
 TINYMCE_SPELLCHECKER = True

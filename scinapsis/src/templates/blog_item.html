@@ -1,14 +1,18 @@
-        <div class="grid-boxes-in">
+
             <!--img class="img-responsive" src="/static/assets/img/masonry/blog2.jpg"-->
             {% if post.postimage_set.values %}
-            <img class="img-responsive" src="/media/{{ post.postimage_set.values.0.image|slice:'2:' }}"> {% endif %}
+                {% if post.postimage_set.values.0.is_video %}
+                <iframe width="100%" height="300" src="{{post.postimage_set.values.0.url}}" frameborder="0" allowfullscreen></iframe>
+
+                {% else %}
+                <img class="img-responsive" src="/media/{{ post.postimage_set.values.0.image|slice:'2:' }}">
+
+                {% endif %}
+            {% endif %}
             <div class="grid-boxes-caption">
                 <h3><a href="/blog/{% if not post.slug %}{{post.id}}{% else %}{{post.slug}}{% endif %}">{{ post.title }}</a></h3>
                 <ul class="list-inline post_meta">
                     <li><i class="fa"></i>{{ post.created }}</li>
-                    <li>|</li>
-                    <li><a href="#"><i class="fa fa-comments-o"></i> Comments</a>
-                    </li>
                 </ul>
                 <!-- post tags -->
                 <p class="post_meta">{% for tag in post.tags.all %}
@@ -28,4 +32,3 @@
                 </div>
 
             </div>
-        </div>

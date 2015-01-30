@@ -16,7 +16,9 @@
 <div class="blog_masonry_3col container">
     <div class="content grid-boxes masonry col-md-9">
         {% for post in object_list %}
+            <div class="grid-boxes-in">
             {% include "blog_item.html" %}
+            </div>
         {% endfor %}
     </div>
 

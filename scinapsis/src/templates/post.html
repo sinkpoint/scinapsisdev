@@ -31,17 +31,20 @@
         <h2>{{ post.title }}</h2>
 
         {% if banner %}
-            <div class="blog-img">
-                <img class="img-responsive" src="/media/{{ banner.0.image|slice:'2:'}}" alt="">
-            </div>
+                {% if post.postimage_set.values.0.is_video %}
+                <iframe width="100%" height="600" src="{{ post.postimage_set.values.0.url|safe }}" frameborder="0" allowfullscreen></iframe>
+
+                {% else %}
+                <img class="img-responsive" src="/media/{{ post.postimage_set.values.0.image|slice:'2:' }}">
+
+                {% endif %}
         {% endif %}
         <!-- Blog meta -->
         <div class="blog-post-tags">
             <ul class="list-unstyled list-inline blog-info">
                 <li><i class="fa fa-calendar">{{ post.created }}</i>
                 </li>
-                <li><i class="fa fa-comments">Comments</i>
-                </li>
+
                 <li><i class="fa fa-tags">
                     {% for tag in post.tags.all %}
                       <a href="/blog/tag/{{tag}}">{{tag}}</a>
@@ -53,6 +56,7 @@
 
 
             <!-- Blog Picture(s) -->
+            {% if images|length > 0 %}
             <div class="blog-img" style="max-width:40%; float:right; margin: 2em; border: 1px solid #555;">
                 <!-- contraint for image size -->
                 {% if images|length > 1 %}
@@ -89,10 +93,9 @@
 
                 <!-- Blog content -->
             </div>
-
+            {% endif %}
             <p>
 
-            {{ post.body | slice:':body_half_len' | safe | linebreaks }}
             {% if post.execerpt %}
                     <div class="tag-box tag-box-v2" style="float: left; margin: 1em;">
                         <p>{{ post.execerpt|safe|linebreaks }}</p>

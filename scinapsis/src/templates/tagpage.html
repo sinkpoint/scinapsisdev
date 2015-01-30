@@ -3,6 +3,7 @@
 {% block css %}
    <!-- CSS Page Style -->
     <link href="/static/assets/css/pages/blog_masonry_3col.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/assets/css/theme-colors/purple.css">
     <link href="/static/css/pages/custom.css" rel="stylesheet">
     {% endblock %}
 
@@ -14,14 +15,19 @@
 </div>
 
 <!--=== Content Part ===-->
-<div class="blog_masonry_3col">
-    <div class="container content grid-boxes masonry">
+<div class="blog_masonry_3col container">
+    <div class="content grid-boxes masonry col-md-9">
         {% for post in posts %}
+            <div class="grid-boxes-in">
             {% include "blog_item.html" %}
+            </div>
         {% endfor %}
     </div>
+
+{% include "sidebar.html" %}
+
+
 </div>
-<!--=== End Content Part ===-->
 
 
 

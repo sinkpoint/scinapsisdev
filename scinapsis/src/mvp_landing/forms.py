@@ -1,10 +1,18 @@
 from django import forms
+from django.core.mail import send_mail
 
 class ContactForm(forms.Form):
     name = forms.CharField()
     email = forms.EmailField()
+    subject = forms.CharField()
     message = forms.CharField(widget=forms.Textarea)
 
     def send_email(self):
-        # send email using the self.cleaned_data dictionary
-        pass
+        subject = self.cleaned_data['subject']
+        message = self.cleaned_data['message']
+        sender = self.cleaned_data['email']
+        #cc_myself = form.cleaned_data['cc_myself']
+
+        recipients = ['qixiang.chen@gmail.com']
+
+        send_mail(subject, message, sender, recipients)
