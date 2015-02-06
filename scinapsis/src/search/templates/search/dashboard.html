@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/c3.css">
+{% endblock %}
+
+{% block base_content %}
+<div id="chart"></div>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/static/js/c3.min.js"></script>
+<script>
+
+var data = [
+        ['A', 30],
+        ['B', 50],
+        ['C', 90]
+    ];
+
+
+slicer1 = function(array) {
+  return d3.max(array.slice(1));
+};
+
+var color_func = d3.scale.linear()
+    .domain([d3.min(data, slicer1), d3.max(data, slicer1)])
+    .range(["#6b486b", "#98abc5"]);
+
+
+var colors = [];
+
+for ( var i in data)
+{
+
+    v = data[i][1]
+    c = color_func(v)
+    console.log(c);
+    colors.push(c);
+}
+
+var chart = c3.generate({
+    data: {
+        bindto: '#chart',
+        // iris data from R
+        columns: data,
+        type : 'pie',
+        onclick: function (d, i) { console.log("onclick", d, i); },
+        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    },
+    color: {
+        //pattern: ["#98abc5", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]
+        pattern: colors
+    }
+});
+
+</script>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+    });
+</script>
+{% endblock %}

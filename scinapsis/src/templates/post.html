@@ -42,7 +42,7 @@
         <!-- Blog meta -->
         <div class="blog-post-tags">
             <ul class="list-unstyled list-inline blog-info">
-                <li><i class="fa fa-calendar">{{ post.created }}</i>
+                <li><i class="fa fa-calendar"> {{ post.created | date:"M d, Y" }}</i>
                 </li>
 
                 <li><i class="fa fa-tags">
