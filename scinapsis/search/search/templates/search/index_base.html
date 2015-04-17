@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block css %}
+
+    {% block index_css %}
+    {% endblock %}
+{% endblock %}
+
+
+{% block base_content %}
+
+<!--=== Search Block ===-->
+<div class="search-block" style="padding: 1em 0; background:#eee;">
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3 input-group">
+        <form class="navbar-form" method="GET" role="search" action="/">
+                <input type="text" class="form-control" placeholder="Search" name="q" value="{{query_set.q}}" style="width: 80%">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn-u"><span class="icon-search"></span></button>
+                </span>
+        </form>
+        </div>
+    </div>
+</div>
+<!--/container-->
+
+<div class="content">
+{% block search_content %}
+{% endblock %}
+</div>
+{% endblock %}

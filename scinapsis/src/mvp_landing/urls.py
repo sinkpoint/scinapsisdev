@@ -26,7 +26,8 @@ urlpatterns = patterns('',
     url(r'^coming-soon/$', 'signups.views.comingsoon', name='comingsoon'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^thanks/', TemplateView.as_view(template_name='contact_thanks.html'), name='thanks')
+    url(r'^thanks/', TemplateView.as_view(template_name='contact_thanks.html'), name='thanks'),
+    url('', include('social.apps.django_app.urls', namespace='social'))
 )
 
 

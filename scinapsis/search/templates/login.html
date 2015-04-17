@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block base_content %}
+ <div class="container" style="">
+
+
+   {% if user and not user.is_anonymous %}
+        <div class="row">
+        <p>Hello {{ user.get_full_name|default:user.username }}!<p>
+        <p><a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a></p>
+        </div>
+   {% else %}
+
+    <div class="row">
+
+        <div class="col-md-6 center-block" style="float:none">
+            <h2>Login</h2>
+            <form method='POST' action='/'> {% csrf_token %}
+            {{form|bootstrap}}
+            <p><input type="submit" class="btn-u btn-success" value="Login"></p>
+            </form>
+
+        <h3>Login With:</h3>
+        <ul class="list-inline">
+            <li>
+            <a class="btn btn-primary" href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">
+                <span class="icon-facebook"></span> Facebook
+            </a>
+            </li>
+            <li>
+            <a class="btn btn-danger" href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
+                <span class="icon-google"></span> Google
+            </a>
+            </li>
+            <li>
+            <a class="btn btn-info" href="{% url 'social:begin' 'linkedin' %}?next={{ request.path }}">
+                <span class="icon-linkedin"></span> Linkedin
+            </a>
+            </li>
+        </ul>
+
+        </div>
+    </div>
+    <div class="row">
+
+     </div>
+   {% endif %}
+
+ </div>
+{% endblock %}

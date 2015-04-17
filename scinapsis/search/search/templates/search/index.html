@@ -1,0 +1,127 @@
+{% extends "search/index_base.html" %}
+
+{% block search_content %}
+<div class="container ">
+    <div class="col-md-9">
+    <p>
+        <span class="results-number">{{data.paginator.count}} results</span>
+    </p>
+    {% regroup data by doc.title as data_list %}
+    {% for entry in data_list %}
+
+        <div class="inner-results tag-box tag-box-v3">
+            <h3><a href="#">{{entry.grouper}}</a></h3>
+            <h4>{{entry.list.0.doc.editors}}</h4>
+
+            <ul class="list-inline up-ul">
+                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="{{entry.list.0.doc.src_address}}"><span class="icon-book2 colored"></span>  {{entry.list.0.doc.publisher}}</a></li>
+                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="http://www.plosone.org{{entry.list.0.doc.pdf_address}}"><span class="icon-file-pdf colored"></span> PDF</a></li>
+                <li><span class="icon-barcode colored"></span> {{entry.list.0.doc.doc_id}}</li>
+            </ul>
+
+            <div class="panel panel-default">
+            <div class="panel-heading">Figures</div>
+            <div class="row panel-body">
+            {% regroup entry.list by figure.url as fig_list %}
+            {% for fig in fig_list %}
+                <div class="col-md-3">
+                <a href="http://www.plosone.org{{fig.grouper}}">
+                    <img class="img-responsive img-bordered" style="max-height:240px" src="http://www.plosone.org{{fig.grouper}}" alt="{{fig.list.0.figure.header}}"/>
+                </a>
+                </div>
+            {% endfor %}
+            </div>
+            </div>
+            <ul class="list-inline down-ul" style="margin-top: 1.5em">
+                <li><h3><a class="btn-u rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
+                    <span class="icon-company"></span> {{entry.list.0.supplier}}</a></h3></li>
+                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm " href="#"><span class="icon-lab">
+                    </span> {{entry.list.0.prod.product_desc}}</a></h3></li>
+                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm " href="#"><span class="icon-target2"></span>
+                {% if entry.list.0.prod.reactivity_human %}
+                    Human
+                {% elif entry.list.0.prod.reactivity_mouse %}
+                    Mouse
+                {% endif %}
+                </a></h3></li>
+                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "href="#">
+                    <span class="icon-host"></span> {{entry.list.0.prod.host}}</a></h3></li>
+            </ul>
+
+        </div>
+    <!-- Begin Inner Results -->
+
+    {% endfor %}
+
+    <div class="text-center">
+            <ul class="pagination">
+                <li>
+                    {% if data.has_previous %}
+                        <a href="?page={{ data.previous_page_number }}">previous</a>
+                    {% endif %}
+                </li>
+                {% for p in data.paginator.page_range %}
+                <li>
+                    {% if p == data.number %}
+                        <a href="#">{{ data.number }}</a>
+                    {% else %}
+                        <a href="?page={{p}}">{{p}}</a>
+                    {% endif %}
+
+                </li>
+                {% endfor %}
+                <li>
+                    {% if data.has_next %}
+                        <a href="?page={{ data.next_page_number }}">next</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="panel panel-purple">
+            <div class="panel-heading">Filters</div>
+            <div class="panel-body">
+            <form>
+                <div class="form-group row">
+                    <label class="input-lg col-lg-3"><span class="icon-company"></span></label>
+                    <select class="input-lg select col-lg-8">
+                        <option>Company</option>
+                        <option>Novus</option>
+                        <option>...</option>
+                    </select>
+                </div>
+                <div class="form-group row">
+                    <label class="input-lg col-lg-3"><span class="icon-target2"></span></label>
+                    <select class="input-lg select col-lg-8">
+                        <option>Target</option>
+                        <option>Human</option>
+                        <option>Mouse</option>
+                    </select>
+                </div>
+                <div class="form-group row">
+                <label class="input-lg col-lg-3"><span class="icon-host"></span></label>
+                <select class="input-lg select col-lg-8">
+                    <option>Host</option>
+                    <option>Mouse</option>
+                    <option>Rabbit</option>
+                </select>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();
+    });
+</script>
+{% endblock %}

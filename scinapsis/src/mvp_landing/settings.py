@@ -33,16 +33,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
@@ -54,6 +44,8 @@ TEMPLATE_CONTEXT_PROCESSORS = [
   'django.contrib.auth.context_processors.auth',
   'django.core.context_processors.i18n',
   'django.core.context_processors.request',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 ]
 
 
@@ -65,11 +57,14 @@ INSTALLED_APPS = (
   'django.contrib.messages',
   'django.contrib.staticfiles',
   'django.contrib.contenttypes',
+  'social.apps.django_app.default',
   'search',
   'taggit',
   'blog',
   'tinymce',
-  'bootstrapform'
+  'bootstrapform',
+  'autocomplete_light',
+  'debug_toolbar'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,6 +74,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
+)
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'django.contrib.auth.backends.ModelBackend'
 )
 
 ROOT_URLCONF = 'mvp_landing.urls'
@@ -93,8 +97,24 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    },
+    'search_db': {
+        'NAME' : 'search_db',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME' : 'scinapsis',
+        'USER': 'root',
+        'PASSWORD': 'harahara'
+    },
+    'user_db' : {
+        'NAME' : 'search_db',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME' : 'scp_users',
+        'USER': 'root',
+        'PASSWORD': 'harahara'
     }
 }
+
+DATABASE_ROUTERS = ['search.routers.SearchDbRouter']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -149,3 +169,37 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_buttons2':"bullist,numlist,outdent,indent,ltr,rtl,separator,link,unlink,anchor,image,separator,table,insertdate,inserttime,advhr,emotions,media,youtube,charmap,code,separator,pasteword,separator,undo,redo",
 }
 TINYMCE_SPELLCHECKER = True
+
+# settings.py
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'mysite.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'MYAPP': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+    }
+}
