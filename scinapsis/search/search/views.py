@@ -11,7 +11,6 @@ def _get_user_info(req):
     else:
         return None
 
-# Create your views here.
 def _get_catids_from_q(query):
     if not query:
         return []
@@ -59,24 +58,76 @@ def login_view(request):
         return render(request,'login.html',{'user':user, 'form':login_form})
 
 
-def _query_constructor(request):
+def _search_query_constructor(request):
     m_query = {}
-    if 'query_set' in request.session:
-        m_query = request.session['query_set']
-
+    # putting queryset in session is inflexible, disabled for now
+    # if 'query_set' in request.session:
+    #     m_query = request.session['query_set']
+    # else:
+    #     request.session['query_set'] = {}
     # get unique product ids that contains keyword search
     data = PubTechProdResult.objects.all()
 
-    if 'q' in request.GET:
-        m_query['q'] = request.GET['q']
-        cat_ids = _get_catids_from_q(m_query['q'])
-        if cat_ids:
-            data = PubTechProdResult.objects.filter(prod_id__in=cat_ids)
+    param_map = {
+        'q':'keywords',
+        't':'technique',
+        'company':'supplier',
+        'target_human':'target-human',
+        'target_mouse':'target-mouse',
+        'host':'host'
+    }
 
-    if 't' in request.GET:
-        tech_name = request.GET['t']
-        m_query['tech_name'] = tech_name
-        data = data.filter(tech_parental_name=tech_name)
+
+    for k,v in param_map.items():
+        if k in request.GET:
+            m_query[v] = request.GET[k]
+
+    if 'keywords' in m_query:
+        kw = m_query['keywords']
+        if kw:
+            cat_ids = _get_catids_from_q(kw)
+            if cat_ids:
+                data = data.filter(prod_id__in=cat_ids)
+
+            if 'kw_history' not in request.session:
+                request.session['kw_history'] = [kw]
+            else:
+                hist = request.session['kw_history']
+                print hist
+
+                if kw in hist:
+                    hist.insert(0, hist.pop(hist.index(kw)))
+                else:
+                    hist.insert(0, kw)
+
+                if len(hist) > 7:
+                    hist = hist[:7]
+                request.session['kw_history'] = hist
+
+    if 'technique' in m_query:
+        tech_name = m_query['technique']
+        if tech_name:
+            data = data.filter(tech_parental_name=tech_name)
+
+    if 'supplier' in m_query:
+        supplier = m_query['supplier']
+        if supplier:
+            data = data.filter(supplier=supplier)
+
+    if 'host' in m_query:
+        host = m_query['host']
+        if host:
+            data = data.filter(prod__host=host)
+
+    if 'target_human' in m_query:
+        state = m_query['target_human']
+        if state == 'on':
+            data = data.filter(prod__reactivity_human=1)
+
+    if 'target_mouse' in m_query:
+        state = m_query['target_mouse']
+        if state == 'on':
+            data = data.filter(prod__reactivity_mouse=1)
 
     return (m_query, data)
 
@@ -88,10 +139,8 @@ def dashboard(request):
 
     pass_data = {'user': user}
 
-    q_input, data = _query_constructor(request)
+    q_input, data = _search_query_constructor(request)
     pass_data['query_set'] = q_input
-    request.session['query_set'] = q_input
-    logging.warning(request.session['query_set'])
     tech_stats = data.values('tech_parental_name').annotate(Count('tech_parental_name')).order_by()
 
     data = []
@@ -113,8 +162,9 @@ def index(request):
 
     pass_data = {'user':user}
 
-    q_input, data = _query_constructor(request)
+    q_input, data = _search_query_constructor(request)
     pass_data['query_set'] = q_input
+
 
     # data = data.values('figure__url', 'figure__header','figure__content',
     #     'doc__title', 'tech_parental_name', 'doc__publisher','doc__src_address',
@@ -134,4 +184,35 @@ def index(request):
         pdata = pagi.page(pagi.num_pages)
 
     pass_data['data'] = pdata
+
+    from .forms import SearchFilterForm
+    filter_form = SearchFilterForm(data, data=request.GET)
+    pass_data['filter_form'] = filter_form
+
+    # suppliers = data.values('supplier').annotate()
+    # pass_data['suppliers'] = suppliers
+
+    # hosts = data.values('prod__host').annotate()
+    # pass_data['hosts'] = hosts
+
     return render(request, "search/index.html", pass_data)
+
+def view(request, id):
+    user = _get_user_info(request)
+    if not user or user.is_anonymous():
+        return redirect('login')
+    pass_data = {'user':user}
+
+    from search.models import PubProductInfo, PubProductResult, ScinPubFigure
+
+    pinfo = PubProductInfo.objects.filter(pk=id)[0]
+    pass_data['pinfo'] = pinfo
+
+    docs = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'doc__editors', 'doc__src_address', 'doc__pdf_address',
+        'doc__publisher', 'doc__doc_id', 'tech_parental_name').annotate()
+    pass_data['docs'] = docs
+
+    figures = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'figure_id', 'figure__url', 'figure__header', 'tech_parental_name').annotate()
+    pass_data['figures'] = figures
+
+    return render(request, "search/view.html", pass_data)

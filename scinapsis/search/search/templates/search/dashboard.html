@@ -16,6 +16,7 @@
 
 {% block search_content %}
 <div class="container">
+{% if data %}
     <div class="headline"><h2>Your search results</h2></div>
         <div class="row">
             <div class="col-md-6 chart-contain">
@@ -27,8 +28,15 @@
                 <div id="chart2"></div>
             </div>
         </div>
+}
+
+{% else %}
+{% include "search/404.html" %}
+{% endif %}
 </div>
+
 <pre>
+Debug
 {{ data }}
 </pre>
 <script src="http://d3js.org/d3.v3.min.js"></script>

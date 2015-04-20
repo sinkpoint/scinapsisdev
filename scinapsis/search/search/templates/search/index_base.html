@@ -1,7 +1,20 @@
 {% extends "base.html" %}
 
 {% block css %}
+<style TYPE="text/css">
+<!--
+.search-block {
+    background-image: url('/static/images/white_shadow_mid.png'), url('/static/images/search_bg_side1.svg');
+    background-position: center;
+    background-repeat: repeat-y, repeat;
+    background-attachment: fixed;
+    background-size: auto, 200px;
+    padding: 1em 0;
+    border-bottom: 1px solid #eee;
+}
 
+-->
+</style>
     {% block index_css %}
     {% endblock %}
 {% endblock %}
@@ -10,13 +23,13 @@
 {% block base_content %}
 
 <!--=== Search Block ===-->
-<div class="search-block" style="padding: 1em 0; background:#eee;">
+<div class="search-block">
     <div class="container">
         <div class="col-md-6 col-md-offset-3 input-group">
         <form class="navbar-form" method="GET" role="search" action="/">
-                <input type="text" class="form-control" placeholder="Search" name="q" value="{{query_set.q}}" style="width: 80%">
+                <input type="text" class="form-control" placeholder="Search" name="q" value="{{query_set.keywords}}" style="width: 80%">
                 <span class="input-group-btn">
-                    <button type="submit" class="btn-u"><span class="icon-search"></span></button>
+                    <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
                 </span>
         </form>
         </div>

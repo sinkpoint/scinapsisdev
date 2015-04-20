@@ -1,22 +1,76 @@
 {% extends "search/index_base.html" %}
 
+{% block index_css %}
+<link rel="stylesheet" href="/static/assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css">
+<link rel="stylesheet" href="/static/assets/plugins/sky-forms/version-2.0.1/css/sky-forms-purple.css">
+<style TYPE="text/css">
+<!--
+.color-purple a {
+    color: #9b6bcc !important;
+}
+
+.inner-results {
+    margin-bottom: 3em;
+}
+
+.sky-form {
+    border: none;
+}
+.sky-form .label {
+    font-size: 20px !important;
+}
+-->
+</style>
+{% endblock %}
 {% block search_content %}
 <div class="container ">
     <div class="col-md-9">
     <p>
-        <span class="results-number">{{data.paginator.count}} results</span>
+        <span class="results-number">{# {data.paginator.count} #}</span>
     </p>
+    {% if not data %}
+
+    {% include "search/404.html" %}
+
+    {% else %}
+
     {% regroup data by doc.title as data_list %}
     {% for entry in data_list %}
 
-        <div class="inner-results tag-box tag-box-v3">
-            <h3><a href="#">{{entry.grouper}}</a></h3>
-            <h4>{{entry.list.0.doc.editors}}</h4>
+        <div class="inner-results">
+
+            <ul class="list-inline up-ul" style="margin-top: 1em">
+                <li>
+                <h3 class="color-purple"><span class="icon-lab"></span><a href="{% url 'view' entry.list.0.prod_id %}">
+                     {{entry.list.0.prod.product_desc}}</a></h3>
+                </li>
+                <li><h3><a class="btn-u rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
+                    <span class="icon-company"></span> {{entry.list.0.supplier}}</a></h3></li>
+
+                {% if entry.list.0.prod.reactivity_human %}
+                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "><span class="icon-target2"></span>
+                    Human
+                </span></h3></li>
+                {% endif %}
+
+                {% if entry.list.0.prod.reactivity_mouse %}
+                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "><span class="icon-target2"></span>
+                    Mouse
+                </span></h3></li>
+                {% endif %}
+
+                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm ">
+                    <span class="icon-host"></span> {{entry.list.0.prod.host}}</span></h3></li>
+            </ul>
+
+
+            <h5><a href="{{entry.list.0.doc.src_address}}">{{entry.grouper}}</a></h5>
+            <h5>{{entry.list.0.doc.editors}}</h5>
 
             <ul class="list-inline up-ul">
                 <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="{{entry.list.0.doc.src_address}}"><span class="icon-book2 colored"></span>  {{entry.list.0.doc.publisher}}</a></li>
                 <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="http://www.plosone.org{{entry.list.0.doc.pdf_address}}"><span class="icon-file-pdf colored"></span> PDF</a></li>
-                <li><span class="icon-barcode colored"></span> {{entry.list.0.doc.doc_id}}</li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> {{entry.list.0.doc.doc_id}}</span></li>
             </ul>
 
             <div class="panel panel-default">
@@ -32,87 +86,105 @@
             {% endfor %}
             </div>
             </div>
-            <ul class="list-inline down-ul" style="margin-top: 1.5em">
-                <li><h3><a class="btn-u rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
-                    <span class="icon-company"></span> {{entry.list.0.supplier}}</a></h3></li>
-                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm " href="#"><span class="icon-lab">
-                    </span> {{entry.list.0.prod.product_desc}}</a></h3></li>
-                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm " href="#"><span class="icon-target2"></span>
-                {% if entry.list.0.prod.reactivity_human %}
-                    Human
-                {% elif entry.list.0.prod.reactivity_mouse %}
-                    Mouse
-                {% endif %}
-                </a></h3></li>
-                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "href="#">
-                    <span class="icon-host"></span> {{entry.list.0.prod.host}}</a></h3></li>
-            </ul>
+
 
         </div>
     <!-- Begin Inner Results -->
-
     {% endfor %}
 
     <div class="text-center">
-            <ul class="pagination">
-                <li>
-                    {% if data.has_previous %}
-                        <a href="?page={{ data.previous_page_number }}">previous</a>
-                    {% endif %}
-                </li>
-                {% for p in data.paginator.page_range %}
-                <li>
-                    {% if p == data.number %}
-                        <a href="#">{{ data.number }}</a>
-                    {% else %}
-                        <a href="?page={{p}}">{{p}}</a>
-                    {% endif %}
+        <ul class="pagination">
+            <li>
+                {% if data.has_previous %}
+                    <a href="?page={{ data.previous_page_number }}">previous</a>
+                {% endif %}
+            </li>
+            {% for p in data.paginator.page_range %}
+            <li>
+                {% if p == data.number %}
+                    <a href="#">{{ data.number }}</a>
+                {% else %}
+                    <a href="?page={{p}}">{{p}}</a>
+                {% endif %}
 
-                </li>
-                {% endfor %}
-                <li>
-                    {% if data.has_next %}
-                        <a href="?page={{ data.next_page_number }}">next</a>
-                    {% endif %}
-                </li>
-            </ul>
-        </div>
+            </li>
+            {% endfor %}
+            <li>
+                {% if data.has_next %}
+                    <a href="?page={{ data.next_page_number }}">next</a>
+                {% endif %}
+            </li>
+        </ul>
     </div>
+    {% endif %}
+    </div>
+
 
     <div class="col-md-3">
-        <div class="panel panel-purple">
-            <div class="panel-heading">Filters</div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading"><h5><span class="icon-filter"></span> Filters</h5></div>
             <div class="panel-body">
-            <form>
-                <div class="form-group row">
-                    <label class="input-lg col-lg-3"><span class="icon-company"></span></label>
-                    <select class="input-lg select col-lg-8">
-                        <option>Company</option>
-                        <option>Novus</option>
-                        <option>...</option>
-                    </select>
-                </div>
-                <div class="form-group row">
-                    <label class="input-lg col-lg-3"><span class="icon-target2"></span></label>
-                    <select class="input-lg select col-lg-8">
-                        <option>Target</option>
-                        <option>Human</option>
-                        <option>Mouse</option>
-                    </select>
-                </div>
-                <div class="form-group row">
-                <label class="input-lg col-lg-3"><span class="icon-host"></span></label>
-                <select class="input-lg select col-lg-8">
-                    <option>Host</option>
-                    <option>Mouse</option>
-                    <option>Rabbit</option>
-                </select>
-                </div>
+
+            <ul class="list-inline">
+                {% for k,v in query_set.items %}
+                    {% if v %}
+                        <li style="margin: 2px">
+                            <span class="btn-u rounded-2x btn-u-xs btn-purple" >
+                               {{k|upper}}: <strong>{{v}}</strong></span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            <hr />
+
+            <form class="sky-form sky-form-purple" action="list">
+                <fieldset>
+                <section class="row">
+                    <label class="label col-sm-3"><span class="icon-company"></span></label>
+                    {{ filter_form.company }}
+                </section>
+
+                <section class="row">
+                    <label class="label col-sm-3"><span class="icon-host"></span></label>
+                    {{ filter_form.host }}
+                </section>
+
+                <section class="row">
+                    <label class="label col-sm-3"><span class="icon-target2"></span></label>
+                    <div class="">
+                        <label class="toggle">{{filter_form.target_human}}<i class="rounded-2x"></i>Human</label>
+                        <label class="toggle">{{filter_form.target_mouse}}<i class="rounded-2x"></i>Mouse</label>
+                    </div>
+                </section>
+
+
+
+                </fieldset>
+                <footer>
+                {{filter_form.q}}
+                {{filter_form.t}}
+                <input class="btn-u" type="submit" value="filter" />
+                </footer>
             </form>
             </div>
+            <div>
+
         </div>
     </div>
 
+
+    <div class="panel panel-default">
+    <div class="panel-heading"><h5><span class="icon-search"></span> Recent Searches </h5></div>
+        <div class="panel-body">
+            <ol class="list">
+            {% for i in request.session.kw_history %}
+            <li><a href="/?q={{i}}">{{i}}</li>
+            {% endfor %}
+            </ol>
+        </div>
+    </div>
 </div>
 
 
