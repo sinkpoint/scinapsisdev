@@ -12,6 +12,7 @@ class SearchFilterForm(forms.Form):
     target_human = forms.BooleanField(label="human")
     target_mouse = forms.BooleanField(label="mouse")
     t = forms.CharField(widget=forms.HiddenInput())
+    q = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, queryset, *args, **kwargs):
         super(SearchFilterForm, self).__init__(*args, **kwargs)

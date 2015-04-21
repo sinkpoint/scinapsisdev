@@ -28,6 +28,17 @@
     <p>
         <span class="results-number">{# {data.paginator.count} #}</span>
     </p>
+    <ul class="list-inline">
+        {% for k,v in query_set.items %}
+            {% if v %}
+                <li style="margin: 1px">
+                    <span class="btn-u rounded-2x btn-u-xs btn-purple" >
+                       {{k|upper}}: <strong>{{v}}</strong></span>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    <hr />
     {% if not data %}
 
     {% include "search/404.html" %}
@@ -126,19 +137,6 @@
             <div class="panel-heading"><h5><span class="icon-filter"></span> Filters</h5></div>
             <div class="panel-body">
 
-            <ul class="list-inline">
-                {% for k,v in query_set.items %}
-                    {% if v %}
-                        <li style="margin: 2px">
-                            <span class="btn-u rounded-2x btn-u-xs btn-purple" >
-                               {{k|upper}}: <strong>{{v}}</strong></span>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-
-            <hr />
-
             <form class="sky-form sky-form-purple" action="list">
                 <fieldset>
                 <section class="row">
@@ -175,16 +173,7 @@
     </div>
 
 
-    <div class="panel panel-default">
-    <div class="panel-heading"><h5><span class="icon-search"></span> Recent Searches </h5></div>
-        <div class="panel-body">
-            <ol class="list">
-            {% for i in request.session.kw_history %}
-            <li><a href="/?q={{i}}">{{i}}</li>
-            {% endfor %}
-            </ol>
-        </div>
-    </div>
+    {% include "search/widget_search_history.html" %}
 </div>
 
 
