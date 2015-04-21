@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url, include
 from django.views.generic import TemplateView
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 
 admin.autodiscover()
 
