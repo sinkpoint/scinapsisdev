@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block base_content %}
+ <div class="container" style="">
+    {% if user and not user.is_anonymous %}
+    <form method='POST' action='userprofile:update_profile'>
+        {% csrf_token %}
+        <label>User name: {{user.username}}</label>
+        <br/>
+        <br/>
+        <label for="first_name">First name: </label>
+        <input id="first_name" type="text" name="first_name" value="{% if user.userprofile%} {{user.userprofile.first_name}} {% endif %}">
+        
+        <p><input type="submit" value="Update"></p>
+    </form>
+    {% endif %}
+ </div>
+{% endblock %}

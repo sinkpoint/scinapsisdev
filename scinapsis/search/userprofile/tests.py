@@ -11,18 +11,22 @@ class UserProfileModelTests(TestCase):
     
     def test_make_a_user_and_profile(self):
         #create a new user: sinkpoint with password
-        user = User.objects.create_user(username='sinkpoint', password='searchBYevidence99')
+        user = User.objects.create_user(username='abc', password='searchBYevidence99')
         user.save()
         
         #authenticate and get the new user back
-        user2 = authenticate(username='sinkpoint', password='searchBYevidence99')
+        user2 = authenticate(username='abc', password='searchBYevidence99')
         
         self.assertTrue(user2 is not None)
         
+        print UserProfile.objects.all()
+        
         #create a new profile for this user
-        profile, created = UserProfile.objects.get_or_create(user=user2)
+        profile, created = UserProfile.objects.get_or_create(user=user)
         
         self.assertTrue(profile is not None)
+        
+        print UserProfile.objects.all()
         
         #put in profile information for fields except for the 'image' field
         profile.first_name = 'fname'
@@ -52,17 +56,23 @@ class UserProfileModelTests(TestCase):
         #save the profile new info
         profile.save()
         
+        
         #get the profile through the user2
-        profile2 = UserProfile.objects.get(user=user2)
+        user3 = User.objects.get(username='abc')
         
         #test if all the profile info saved
-        self.assertEqual(profile2.first_name, 'fname')
-        self.assertEqual(profile2.middle_name, 'mname')
-        self.assertEqual(profile2.last_name, 'lname')
-        self.assertTrue(profile2.address is not None)
-        self.assertEqual(profile2.address.province, 'Ontario')
-        self.assertEqual(profile2.email, 'sinkpoint@abcmail.com')
-        self.assertEqual(profile2.phone.phone_number, '340958209')
+        self.assertEqual(user3.userprofile.first_name, 'fname')
+        self.assertEqual(user3.userprofile.middle_name, 'mname')
+        self.assertEqual(user3.userprofile.last_name, 'lname')
+        self.assertTrue(user3.userprofile.address is not None)
+        self.assertEqual(user3.userprofile.address.province, 'Ontario')
+        self.assertEqual(user3.userprofile.email, 'sinkpoint@abcmail.com')
+        self.assertEqual(user3.userprofile.phone.phone_number, '340958209')
+        
+        user_no_profile = User.objects.create_user(username='sdf', password='sdfa')
+        user_no_profile.save()
+        
+        
         
         #print out existing profile objects, in which there should only be one object
         print UserProfile.objects.all()
