@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 
 from django.contrib.auth.models import User
 
-from userprofile.models import UserProfile
+from userprofile.models import UserProfile, PhoneModel, AddressModel
 
 
 import logging
@@ -29,11 +29,39 @@ def profilepage(request):
     if user is not None:
         context = {'user': user}
         return render(request, 'userprofile/profilepage.html', context)
-    return HttpResponseRedirect('userprofile:index')
+    return redirect('userprofile:index')
     
 
 
 def update_profile(request):
-    
-    return HttpResponseRedirect('userprofile:profilepage')
+    user = _get_user_info(request)
+    if user is not None:
+        profile, profile_created = UserProfile.objects.get_or_create(user=user)
+        profile.first_name = request.POST['first_name'].strip()
+        profile.middle_name = request.POST['middle_name'].strip()
+        profile.last_name = request.POST['last_name'].strip()
+        
+        if profile.phone is None:
+            phone = PhoneModel.objects.create(phone_number=request.POST['phone_number'].strip())
+            phone.save()
+            profile.phone = phone
+        else:
+            profile.phone.phone_number = request.POST['phone_number'].strip()
+        
+        if profile.address is None:
+            address = AddressModel.objects.create(street=request.POST['street_address'].strip(), province=request.POST['province_address'], country=request.POST['country_address'])
+            address.save()
+            profile.address = address
+        else:
+            profile.address.street = request.POST['street_address']
+            profile.address.province = request.POST['province_address']
+            profile.address.country = request.POST['country_address']
+        
+        if 'profile_image' in request.FILES:
+            profile.image = request.FILES['profile_image']
+        
+        profile.save()
+        context = {'user': user}
+        return redirect('userprofile:profilepage')
+    return redirect('userprofile:index')
 

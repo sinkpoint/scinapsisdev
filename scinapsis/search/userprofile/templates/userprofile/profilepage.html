@@ -4,13 +4,44 @@
 {% block base_content %}
  <div class="container" style="">
     {% if user and not user.is_anonymous %}
-    <form method='POST' action='userprofile:update_profile'>
+    <form method='POST' action="{% url 'userprofile:update_profile' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <label>User name: {{user.username}}</label>
         <br/>
         <br/>
         <label for="first_name">First name: </label>
-        <input id="first_name" type="text" name="first_name" value="{% if user.userprofile%} {{user.userprofile.first_name}} {% endif %}">
+        <input id="first_name" type="text" name="first_name" value="{% if user.userprofile%}{{user.userprofile.first_name}}{% endif %}">
+        <br/>
+        <label for="middle_name">Middle name: </label>
+        <input id="middle_name" type="text" name="middle_name" value="{% if user.userprofile%}{{user.userprofile.middle_name}}{% endif %}">
+        <br/>
+        <label for="last_name">Last name: </label>
+        <input id="last_name" type="text" name="last_name" value="{% if user.userprofile%}{{user.userprofile.last_name}}{% endif %}">
+        <br/>
+        <br/>
+        <label for="phone_number">Phone: </label>
+        <input id="phone_number" type="text" name="phone_number" value="{% if user.userprofile and user.userprofile.phone%}{{user.userprofile.phone.phone_number}}{% endif %}">
+        <br/>
+        <label for="email">Email: </label>
+        <input id="email" type="text" name="email" value="{% if user.userprofile%}{{user.userprofile.email}}{% endif %}">
+        <br/>
+        <br/>
+        <label>Address:</label>
+        <br/>
+        <label for="street_address">Street: </label>
+        <input id="street_address" type="text" name="street_address" value="{% if user.userprofile and user.userprofile.address%}{{user.userprofile.address.street}}{% endif %}">
+        <br/>
+         <label for="province_address">Province: </label>
+        <input id="province_address" type="text" name="province_address" value="{% if user.userprofile and user.userprofile.address%}{{user.userprofile.address.province}}{% endif %}">
+        <br/>
+         <label for="country_address">Country: </label>
+        <input id="country_address" type="text" name="country_address" value="{% if user.userprofile and user.userprofile.address%}{{user.userprofile.address.country}}{% endif %}">
+        <br/>
+        <br/>
+        
+        <input type="file" name="profile_image" accept="image/*">
+        <br/>
+        <br/>
         
         <p><input type="submit" value="Update"></p>
     </form>

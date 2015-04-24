@@ -60,7 +60,7 @@
                         {% if user.userprofile and user.userprofile.image %}
                             <li> <img src="{{ user.userprofile.image }}"></li>
                         {% else %}
-                            <li> <img src="{% static 'userprofile/images/up_placeholder.png' %}" style="height:50px;max-width:50px;"></li>
+                            <li> <img src="{% static 'images/profile_unknown_sm.png' %}" style="height:50px;max-width:50px;"></li>
                         {% endif %}
                         <li class="topbar-devider"></li>
                         <li><a href="/logout">Logout</a></li>
