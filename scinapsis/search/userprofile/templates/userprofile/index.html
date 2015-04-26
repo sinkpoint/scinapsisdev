@@ -56,9 +56,9 @@
 
 
                     {% if user and not user.is_anonymous %}
-                        <li>Hello {{user.username}}</li>
+                        <li>Hello <a href="{% url 'userprofile:profilepage' %}">{{user.username}}</a></li>
                         {% if user.userprofile and user.userprofile.image %}
-                            <li> <img src="{{ user.userprofile.image }}"></li>
+                            <li> <img src="{{ user.userprofile.image.url }}" style="height:50px;max-width:50px;"></li>
                         {% else %}
                             <li> <img src="{% static 'images/profile_unknown_sm.png' %}" style="height:50px;max-width:50px;"></li>
                         {% endif %}

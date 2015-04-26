@@ -26,6 +26,6 @@ class UserProfile(models.Model):
     phone = models.ForeignKey(PhoneModel, null=True)
     address = models.ForeignKey(AddressModel, null=True)
     email = models.EmailField()
-    image = models.ImageField(blank=True, null=True)
+    image = models.ImageField(upload_to='static/media/userprofile/profile_images', blank=True, null=True)
     
     
