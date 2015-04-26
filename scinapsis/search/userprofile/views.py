@@ -47,21 +47,25 @@ def update_profile(request):
             profile.phone = phone
         else:
             profile.phone.phone_number = request.POST['phone_number'].strip()
+            profile.phone.save()
         
         if profile.address is None:
-            address = AddressModel.objects.create(street=request.POST['street_address'].strip(), province=request.POST['province_address'], country=request.POST['country_address'])
+            address = AddressModel.objects.create(street=request.POST['street_address'].strip(), province=request.POST['province_address'].strip(), country=request.POST['country_address'].strip())
             address.save()
             profile.address = address
         else:
-            profile.address.street = request.POST['street_address']
-            profile.address.province = request.POST['province_address']
-            profile.address.country = request.POST['country_address']
+            profile.address.street = request.POST['street_address'].strip()
+            profile.address.province = request.POST['province_address'].strip()
+            profile.address.country = request.POST['country_address'].strip()
+            profile.address.save()
+        
+        profile.email = request.POST['email']
         
         if 'profile_image' in request.FILES:
             profile.image = request.FILES['profile_image']
         
         profile.save()
-        context = {'user': user}
+        
         return redirect('userprofile:profilepage')
     return redirect('userprofile:index')
 
