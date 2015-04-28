@@ -24,6 +24,14 @@ class PubProductInfo(models.Model):
     immunogen = models.CharField(max_length=1500, blank=True)
     reactivity_human = models.IntegerField(blank=True, null=True)
     reactivity_mouse = models.IntegerField(blank=True, null=True)
+    size = models.CharField(max_length=10, blank=True)
+    price_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    primary_accession = models.CharField(max_length=20, blank=True)
+    other_accession = models.CharField(max_length=300, blank=True)
+    gene_name = models.CharField(max_length=20, blank=True)
+    antigen_region = models.CharField(max_length=20, blank=True)
+    antigen_source = models.CharField(max_length=150, blank=True)
+    clonality = models.CharField(max_length=10, blank=True)
 
     class Meta:
         managed = False
@@ -31,12 +39,9 @@ class PubProductInfo(models.Model):
 
 
 class PubProductName(models.Model):
-    id = models.ForeignKey(PubProductInfo, db_column='id', primary_key=True)
-    name1 = models.CharField(max_length=40, blank=True)
-    name2 = models.CharField(max_length=40, blank=True)
-    name3 = models.CharField(max_length=40, blank=True)
-    name4 = models.CharField(max_length=40, blank=True)
-    name5 = models.CharField(max_length=40, blank=True)
+    id = models.IntegerField(primary_key=True)  # AutoField?
+    prod = models.ForeignKey(PubProductInfo, blank=True, null=True)
+    name = models.CharField(max_length=40, blank=True)
 
     class Meta:
         managed = False
@@ -76,7 +81,6 @@ class PubSupplierResult(models.Model):
 
 
 class PubTechProdResult(models.Model):
-    id=models.IntegerField(primary_key=True)
     doc = models.ForeignKey('ScinPubMeta', blank=True, null=True)
     figure = models.ForeignKey('ScinPubFigure', blank=True, null=True)
     si_id = models.IntegerField(blank=True, null=True)
@@ -88,6 +92,7 @@ class PubTechProdResult(models.Model):
     catalog_nb = models.CharField(max_length=100, blank=True)
     product_name = models.CharField(max_length=40, blank=True)
     sentence = models.TextField(blank=True)
+    id = models.IntegerField(primary_key=True)  # AutoField?
 
     class Meta:
         managed = False
@@ -157,6 +162,12 @@ class ScinPubMeta(models.Model):
     competing_interest = models.TextField()
     rec_update_time = models.DateTimeField()
     rec_update_by = models.CharField(max_length=20)
+    citation_str = models.CharField(max_length=800, blank=True)
+    author = models.CharField(max_length=800, blank=True)
+    saves = models.IntegerField(blank=True, null=True)
+    shares = models.IntegerField(blank=True, null=True)
+    views = models.IntegerField(blank=True, null=True)
+    citation = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

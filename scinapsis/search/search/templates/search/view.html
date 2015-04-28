@@ -1,5 +1,5 @@
 {% extends "search/index_base.html" %}
-
+{% load search_filters %}
 {% block index_css %}
 
 <style TYPE="text/css">
@@ -24,8 +24,7 @@
         <h2><span class="icon-lab"></span>{{pinfo.product_desc}}</h2>
      </div>
     <ul class="list-inline">
-    <li><a class="btn-u rounded-2x" href="#"><span class="icon-cart"></span> Order</a></li>
-    <li><a class="btn-u rounded-2x" href="#"><span class="icon-gift"></span> Wish</a></li>
+    <li><a class="btn-u rounded-2x" href="#"><span class="icon-cart"></span> Product Page</a></li>
     <li><a class="btn-u btn-brd rounded-2x" href="#"><span class="icon-heart"></span> Favorite</a></li>
     <li><a class="btn-u btn-brd rounded-2x" href="#"><span class="icon-share"></span> Share</a></li>
 
@@ -62,13 +61,15 @@
     {% for item in docs_grp %}
         {% with item.list.0 as it %}
         <div class="inner-results">
-            <h5><a href="{{item.doc__src_address}}">{{item.grouper}}</a></h5>
-            <h5>{{it.doc__editors}}</h5>
+            <h5 class="citation"><a href="{{item.doc__src_address}}">{{item.grouper}}</a></h5>
+            <h5 class="citation cite-author">{{it.doc__author|author_format}}</h5>
 
-            <ul class="list-inline up-ul">
-                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="{{it.doc__src_address}}"><span class="icon-book2 colored"></span>  {{it.doc__publisher}}</a></li>
-                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="{{it.doc__pdf_address}}"><span class="icon-file-pdf colored"></span> PDF</a></li>
+            <ul class="list-inline citation-tags">
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span> Cited by {{it.doc__citation}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span> {{it.doc__publisher}}</span></li>
+                <!--
                 <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> DOI:{{it.doc__doc_id}}</span></li>
+                -->
                 {% for i in item.list %}
                 <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-microscope colored">
                     </span>{{i.tech_parental_name}}</span></li>

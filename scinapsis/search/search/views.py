@@ -18,9 +18,8 @@ def _get_catids_from_q(query):
     from search.models import PubProductName
     from django.db.models import Q
 
-    cat_ids = PubProductName.objects.filter(Q(name1__contains=query) | Q(name2__contains=query) |
-        Q(name3__contains=query) | Q(name4__contains=query) | Q(name5__contains=query)).values('id')
-    cat_ids = [ i['id'] for i in cat_ids]
+    cat_ids = PubProductName.objects.filter(Q(name__contains=query)).values('prod_id').annotate()
+    cat_ids = [ i['prod_id'] for i in cat_ids]
     logging.warning(cat_ids)
     return cat_ids
 
@@ -133,6 +132,7 @@ def _search_query_constructor(request):
 
 
 def dashboard(request):
+    from datetime import date
     user = _get_user_info(request)
     if not user or user.is_anonymous():
         return redirect('login')
@@ -141,14 +141,52 @@ def dashboard(request):
 
     q_input, data = _search_query_constructor(request)
     pass_data['query_set'] = q_input
-    tech_stats = data.values('tech_parental_name').annotate(Count('tech_parental_name')).order_by()
-
-    data = []
+    tech_stats = data.values('tech_parental_name').annotate(Count('tech_parental_name')).order_by('tech_parental_name')
+    tech_data = []
     for i in tech_stats:
         ks = i.keys()
-        data.append([str(i[ks[0]]),i[ks[1]]])
+        tech_data.append([str(i[ks[0]]),i[ks[1]]])
 
-    pass_data['data'] = data
+    catids = []
+    if 'keywords' in q_input:
+        catids = _get_catids_from_q(q_input['keywords'])
+
+    sql = """
+    SELECT `pub_tech_prod_result`.`tech_parental_name`, year(`scin_pub_meta`.`pub_date`) AS `pub_year`, COUNT(*) AS `cite_count`
+    FROM `pub_tech_prod_result` INNER JOIN `scin_pub_meta` ON ( `pub_tech_prod_result`.`doc_id` = `scin_pub_meta`.`id` )
+    """
+
+    if catids and len(catids) > 0:
+        sql += " WHERE (`pub_tech_prod_result`.`prod_id` IN ( "
+        sql += ','.join(str(id) for id in catids)
+        sql += ")) "
+
+    sql += "GROUP BY `pub_year`,`pub_tech_prod_result`.`tech_parental_name` ORDER BY `pub_tech_prod_result`.`tech_parental_name`,`pub_year` ASC"
+    print sql
+    from django.db import connections
+    with connections['search_db'].cursor() as cursor:
+        cursor.execute(sql)
+        qres = [i for i in cursor.fetchall()]
+
+    if qres:
+        #qs = data.filter(doc__pub_date__lte=date.today())
+        #qs = data.extra(select={'pub_year' : 'year(pub_date)'})
+        #cite_stats = qs.values('pub_year', 'tech_parental_name').annotate(Count('pub_year')).order_by('tech_parental_name')
+        import pandas as pd
+        cite_df = pd.DataFrame(qres, columns=['technique', 'year', 'citations'])
+        cite_df = cite_df.pivot(index='technique', columns='year', values='citations')
+        #cite_df = cite_df.fillna(0)
+
+        cite_data = [['year']+[str(i) for i in cite_df.index.values]] + list(cite_df.T.itertuples())
+        cite_data = [list(i) for i in zip(*cite_data)]
+
+        from django.http import JsonResponse
+        cite_json = JsonResponse(cite_data, safe=False)
+        cite_pass = cite_json.content
+    else:
+        cite_pass = []
+    pass_data['tech_data'] = tech_data
+    pass_data['cite_data'] = cite_pass
     pass_data['request'] = request.GET
     return render(request, "search/dashboard.html", pass_data)
 
@@ -170,7 +208,7 @@ def index(request):
     #     'doc__title', 'tech_parental_name', 'doc__publisher','doc__src_address',
     #     'doc__pdf_address','supplier', 'product_name').annotate(Count('figure__url')).order_by('doc__title', 'figure__figure_id')
 
-    data = data.order_by('doc__title', 'figure__header')
+    data = data.order_by('-doc__citation','doc__title', 'figure__header')
 
     pagi = Paginator(data, 30)
     page = request.GET.get('page')
@@ -208,11 +246,11 @@ def view(request, id):
     pinfo = PubProductInfo.objects.filter(pk=id)[0]
     pass_data['pinfo'] = pinfo
 
-    docs = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'doc__editors', 'doc__src_address', 'doc__pdf_address',
-        'doc__publisher', 'doc__doc_id', 'tech_parental_name').annotate()
+    docs = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'doc__author', 'doc__src_address', 'doc__pdf_address',
+        'doc__publisher', 'doc__doc_id', 'tech_parental_name', 'doc__citation').annotate().order_by('-doc__citation')
     pass_data['docs'] = docs
 
-    figures = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'figure_id', 'figure__url', 'figure__header', 'tech_parental_name').annotate()
+    figures = PubTechProdResult.objects.filter(prod_id=id).values('doc__title', 'doc__citation','figure_id', 'figure__url', 'figure__header', 'tech_parental_name').annotate().order_by('-doc__citation', 'figure__header')
     pass_data['figures'] = figures
 
     return render(request, "search/view.html", pass_data)

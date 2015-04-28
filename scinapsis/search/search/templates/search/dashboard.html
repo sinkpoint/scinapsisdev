@@ -16,8 +16,19 @@
 
 {% block search_content %}
 <div class="container">
-{% if data %}
-    <div class="headline"><h2>Your search results</h2></div>
+    <ul class="list-inline">
+        {% for k,v in query_set.items %}
+            {% if v %}
+                <li style="margin: 1px">
+                    <span class="btn-u rounded-2x btn-u-xs btn-purple" >
+                       {{k|upper}}: <strong>{{v}}</strong></span>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+{% if tech_data %}
+    <div class="headline"><h2>Dashboard</h2></div>
         <div class="row">
             <div class="col-md-6 chart-contain">
                 <h2 class="text-center">Methods</h2>
@@ -28,38 +39,40 @@
                 <div id="chart2"></div>
             </div>
         </div>
-}
 
 {% else %}
 {% include "search/404.html" %}
 {% endif %}
 </div>
-
+<!--
 <pre>
 Debug
-{{ data }}
+{{ tech_data }}
+{{ cite_data }}
 </pre>
+-->
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="/static/js/c3.min.js"></script>
 <script>
 
-var data = {{data|safe}};
+var data = {{tech_data|safe}};
 
-var data2 = [
-        ["x", 2011,2012,2013,2014],
-        ["IF", 1.3, 1.5, 2, 2.1],
-        ["IHC", 1.1, 2, 3.1, 4],
-        ["WB", 3, 5.5, 7.8, 9]
-    ];
+var data2 = {{cite_data|safe}};
 
 slicer1 = function(array) {
   return d3.max(array.slice(1));
 };
 
-var color_func = d3.scale.linear()
-    .domain([d3.min(data, slicer1), d3.max(data, slicer1)])
-    .range(["#6b486b", "#98abc5"]);
+// var color_func = d3.scale.linear()
+//     .domain([d3.min(data, slicer1), d3.max(data, slicer1)])
+//     .range(["#ff8c00", "#6b486b", "#98abc5"]);
 
+var  inner_scale = d3.scale.log()
+    .domain([d3.min(data, slicer1), d3.max(data, slicer1)]).range([0, 1]);
+var   outer_scale = d3.scale.linear()
+    .domain([0, 0.5, 1])
+    .interpolate(d3.interpolateRgb)
+    .range(["#98abc5", "#ff8c00", "#6b486b"]);
 
 var colors = [];
 
@@ -67,8 +80,7 @@ for ( var i in data)
 {
 
     v = data[i][1]
-    c = color_func(v)
-    console.log(c);
+    c = outer_scale(inner_scale(v));
     colors.push(c);
 }
 
@@ -95,7 +107,7 @@ var chart2 = c3.generate({
     bindto: '#chart2',
     data: {
         // iris data from R
-        x: 'x',
+        x: 'year',
         columns: data2,
         type : 'spline',
         onclick: function (d, i) {
@@ -111,7 +123,7 @@ var chart2 = c3.generate({
             label: 'Year'
         },
         y: {
-            label: 'Impact Factor'
+            label: '# of Citations'
         }
     }
 });

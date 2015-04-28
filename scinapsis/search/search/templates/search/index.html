@@ -1,5 +1,5 @@
 {% extends "search/index_base.html" %}
-
+{% load search_filters %}
 {% block index_css %}
 <link rel="stylesheet" href="/static/assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css">
 <link rel="stylesheet" href="/static/assets/plugins/sky-forms/version-2.0.1/css/sky-forms-purple.css">
@@ -19,6 +19,8 @@
 .sky-form .label {
     font-size: 20px !important;
 }
+
+
 -->
 </style>
 {% endblock %}
@@ -50,12 +52,12 @@
 
         <div class="inner-results">
 
-            <ul class="list-inline up-ul" style="margin-top: 1em">
+            <ul class="list-inline citation-tags" style="margin-top: 1em">
                 <li>
-                <h3 class="color-purple"><span class="icon-lab"></span><a href="{% url 'view' entry.list.0.prod_id %}">
+                <h3 class="color-purple" style="margin-right: 2em"><span class="icon-lab"></span><a href="{% url 'view' entry.list.0.prod_id %}">
                      {{entry.list.0.prod.product_desc}}</a></h3>
                 </li>
-                <li><h3><a class="btn-u rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
+                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
                     <span class="icon-company"></span> {{entry.list.0.supplier}}</a></h3></li>
 
                 {% if entry.list.0.prod.reactivity_human %}
@@ -75,13 +77,12 @@
             </ul>
 
 
-            <h5><a href="{{entry.list.0.doc.src_address}}">{{entry.grouper}}</a></h5>
-            <h5>{{entry.list.0.doc.editors}}</h5>
-
-            <ul class="list-inline up-ul">
-                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="{{entry.list.0.doc.src_address}}"><span class="icon-book2 colored"></span>  {{entry.list.0.doc.publisher}}</a></li>
-                <li><a class="btn-u btn-brd rounded-2x btn-u-xs btn-u-purple" href="http://www.plosone.org{{entry.list.0.doc.pdf_address}}"><span class="icon-file-pdf colored"></span> PDF</a></li>
-                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> {{entry.list.0.doc.doc_id}}</span></li>
+            <h5 class="citation cite-title"><a href="{{entry.list.0.doc.src_address}}">{{entry.grouper}}</a></h5>
+            <h5 class="citation cite-author">{{entry.list.0.doc.author|author_format}}</h5>
+            <ul class="list-inline citation-tags">
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>  Cited by {{entry.list.0.doc.citation}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>  {{entry.list.0.doc.publisher}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> DOI:{{entry.list.0.doc.doc_id}}</span></li>
             </ul>
 
             <div class="panel panel-default">

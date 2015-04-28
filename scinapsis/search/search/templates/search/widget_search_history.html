@@ -1,0 +1,11 @@
+    <div class="panel panel-default">
+    <div class="panel-heading"><h5><span class="icon-search"></span> Recent Searches </h5></div>
+        <div class="panel-body">
+            <ol class="list">
+            {% for i in request.session.kw_history %}
+            <li><a href="/?q={{i}}">{{i}}</a></li>
+            {% endfor %}
+            </ol>
+        </div>
+    </div>
+
