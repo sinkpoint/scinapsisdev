@@ -51,7 +51,26 @@
         <!-- Topbar -->
         <div class="topbar">
             <div class="container">
-                {% include 'userprofile/login_toolbar.html'%}
+                <!-- Topbar Navigation -->
+                <ul class="loginbar pull-right">
+
+
+                    {% if user and not user.is_anonymous %}
+                        <li>Hello <a href="{% url 'userprofile:profilepage' %}">{{user.username}}</a></li>
+                        {% if user.userprofile and user.userprofile.image %}
+                            <li> <img src="{{ user.userprofile.image.url }}" style="height:50px;max-width:50px;"></li>
+                        {% else %}
+                            <li> <img src="{% static 'images/profile_unknown_sm.png' %}" style="height:50px;max-width:50px;"></li>
+                        {% endif %}
+                        <li class="topbar-devider"></li>
+                        <li><a href="/logout">Logout</a></li>
+                    {% else %}
+
+                        <li><a href="/login">Login</a></li>
+                    {% endif %}
+
+                </ul>
+                <!-- End Topbar Navigation -->
             </div>
         </div>
         <!-- End Topbar -->
@@ -73,7 +92,7 @@
                     <ul class="nav navbar-nav">
                         <!-- Home -->
                         <li class="dropdown">
-                            <li><a href="/">Home</a>
+                            <li><a href="#">Home</a>
                             </li>
                         </li>
                         <!-- End Home -->
