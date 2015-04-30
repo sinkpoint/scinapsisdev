@@ -1,0 +1,21 @@
+{% load static %}
+<!-- Topbar Navigation -->
+<ul class="loginbar pull-right">
+
+    {% if user and not user.is_anonymous %}
+        <li>Hello <a href="{% url 'userprofile:profilepage' %}">{{user.username}}</a></li>
+        <li><a href="{% url 'userprofile:profilepage' %}">
+        {% if user.userprofile and user.userprofile.image %}
+            <img src="{{ user.userprofile.image.url }}" style="height:50px;max-width:50px;">
+        {% else %}
+            <img src="{% static 'images/profile_unknown_sm.png' %}" style="height:50px;max-width:50px;">
+        {% endif %}
+            </a></li>
+        <li class="topbar-devider"></li>
+        <li><a href="/logout">Logout</a></li>
+    {% else %}
+
+        <li><a href="/login">Login</a></li>
+    {% endif %}
+
+</ul>
