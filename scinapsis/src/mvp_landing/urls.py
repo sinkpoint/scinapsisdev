@@ -20,14 +20,12 @@ urlpatterns = patterns('',
 
     url(r'^privacy-statement/$', 'signups.views.privacy', name='privacy'),
     url(r'^blog/', include('blog.urls', namespace='blog')),
-    url(r'^search/', include('search.urls', namespace='search')),
     url(r'^about/$', TemplateView.as_view(template_name='about.html'), name='about'),
     url(r'^contact/$', ContactView.as_view(), name='contact'),
     url(r'^coming-soon/$', 'signups.views.comingsoon', name='comingsoon'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
-    url(r'^thanks/', TemplateView.as_view(template_name='contact_thanks.html'), name='thanks'),
-    url('', include('social.apps.django_app.urls', namespace='social'))
+    url(r'^thanks/', TemplateView.as_view(template_name='contact_thanks.html'), name='thanks')
 )
 
 

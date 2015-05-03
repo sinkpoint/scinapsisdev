@@ -90,7 +90,7 @@
         {% with fitem.list.0 as fit %}
             <div class="grid-boxes-in masonry-brick thumbnail thumbnail-style" style="width:256px">
                     <p><strong>{{ fit.doc__title}}</h6></strong></p>
-                    <img class="img-responsive img-bordered" src="http://www.plosone.org{{fit.figure__url}}" />
+                    <img class="img-responsive img-bordered" src="{{fit.figure__url | plosone_figure_url:"medium" }}" />
                     <div class="caption">
                         <p>{{ fit.figure__header}}</p>
                         <ul class="list-inline">

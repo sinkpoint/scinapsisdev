@@ -90,9 +90,9 @@
             <div class="row panel-body">
             {% regroup entry.list by figure.url as fig_list %}
             {% for fig in fig_list %}
-                <div class="col-md-3">
-                <a href="http://www.plosone.org{{fig.grouper}}">
-                    <img class="img-responsive img-bordered" style="max-height:240px" src="http://www.plosone.org{{fig.grouper}}" alt="{{fig.list.0.figure.header}}"/>
+                <div class="col-md-2">
+                <a href="{{fig.grouper | plosone_figure_url }}">
+                    <img class="img-responsive img-bordered" style="max-height:240px" src="{{fig.grouper | plosone_figure_url:"small" }}" alt="{{fig.list.0.figure.header}}"/>
                 </a>
                 </div>
             {% endfor %}
@@ -114,9 +114,11 @@
             {% for p in data.paginator.page_range %}
             <li>
                 {% if p == data.number %}
-                    <a href="#">{{ data.number }}</a>
+                    <a >{{ data.number }}</a>
                 {% else %}
-                    <a href="?page={{p}}">{{p}}</a>
+                    <a href="?page={{p}}{% for key, value in request.GET.items %}&{{ key }}={{ value }}{% endfor %}">
+                    {{p}}
+                    </a>
                 {% endif %}
 
             </li>
