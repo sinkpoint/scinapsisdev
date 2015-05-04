@@ -20,6 +20,10 @@
     font-size: 20px !important;
 }
 
+.tag-box-v2 {
+    background: white;
+}
+
 
 -->
 </style>
@@ -40,7 +44,6 @@
             {% endif %}
         {% endfor %}
     </ul>
-    <hr />
     {% if not data %}
 
     {% include "search/404.html" %}
@@ -50,53 +53,52 @@
     {% regroup data by doc.title as data_list %}
     {% for entry in data_list %}
 
-        <div class="inner-results">
+        <div class="inner-results row tag-box tag-box-v2">
+        <div class="col-md-6">
+            <h3 class="color-purple" style="margin-right: 2em">
+                <span class="icon-lab"></span><a href="{% url 'view' entry.list.0.prod_id %}">
+                 {{entry.list.0.prod.product_desc}}</a>
+                 <span><i class="rounded "></i>
+            </h3>
+            <br />
 
-            <ul class="list-inline citation-tags" style="margin-top: 1em">
-                <li>
-                <h3 class="color-purple" style="margin-right: 2em"><span class="icon-lab"></span><a href="{% url 'view' entry.list.0.prod_id %}">
-                     {{entry.list.0.prod.product_desc}}</a></h3>
-                </li>
-                <li><h3><a class="btn-u btn-brd rounded-2x btn-u-purple" href="{{entry.list.0.prod.url}}">
-                    <span class="icon-company"></span> {{entry.list.0.supplier}}</a></h3></li>
+            <ul class="list-inline citation-tags">
 
+                <li><a class="btn-u btn-brd rounded-2x btn-u-xs  btn-u-purple" href="{{entry.list.0.prod.url}}">
+                    <span class="icon-company"></span> {{entry.list.0.supplier}}</a></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>  Cited by {{entry.list.0.doc.citation}}</span></li>
+            </ul>
+            <ul class="list-inline citation-tags">
                 {% if entry.list.0.prod.reactivity_human %}
-                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "><span class="icon-target2"></span>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs  "><span class="icon-target2"></span>
                     Human
-                </span></h3></li>
+                </span></li>
                 {% endif %}
 
                 {% if entry.list.0.prod.reactivity_mouse %}
-                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm "><span class="icon-target2"></span>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-target2"></span>
                     Mouse
-                </span></h3></li>
+                </span></li>
                 {% endif %}
 
-                <li><h3><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-sm ">
-                    <span class="icon-host"></span> {{entry.list.0.prod.host}}</span></h3></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs ">
+                    <span class="icon-host"></span> {{entry.list.0.prod.host}}</span></li>
             </ul>
-
-
-            <h5 class="citation cite-title"><a href="{{entry.list.0.doc.src_address}}">{{entry.grouper}}</a></h5>
-            <h5 class="citation cite-author">{{entry.list.0.doc.author|author_format}}</h5>
-            <ul class="list-inline citation-tags">
-                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>  Cited by {{entry.list.0.doc.citation}}</span></li>
-                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>  {{entry.list.0.doc.publisher}}</span></li>
-                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> DOI:{{entry.list.0.doc.doc_id}}</span></li>
-            </ul>
-
-            <div class="panel panel-default">
-            <div class="panel-heading">Figures</div>
-            <div class="row panel-body">
-            {% regroup entry.list by figure.url as fig_list %}
-            {% for fig in fig_list %}
-                <div class="col-md-2">
-                <a href="{{fig.grouper | plosone_figure_url }}">
-                    <img class="img-responsive img-bordered" style="max-height:240px" src="{{fig.grouper | plosone_figure_url:"small" }}" alt="{{fig.list.0.figure.header}}"/>
-                </a>
-                </div>
-            {% endfor %}
             </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Top Figures</div>
+                    <div class="row panel-body">
+                    {% regroup entry.list by figure.url as fig_list %}
+                    {% for fig in fig_list %}
+                        <div class="col-md-6">
+                        <a href="{{fig.grouper | plosone_figure_url }}">
+                            <img class="img-responsive img-bordered" style="max-height:240px" src="{{fig.grouper | plosone_figure_url:"medium" }}" alt="{{fig.list.0.figure.header}}"/>
+                        </a>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
             </div>
 
 

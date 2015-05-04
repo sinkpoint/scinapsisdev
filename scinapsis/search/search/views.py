@@ -208,7 +208,8 @@ def index(request):
     #     'doc__title', 'tech_parental_name', 'doc__publisher','doc__src_address',
     #     'doc__pdf_address','supplier', 'product_name').annotate(Count('figure__url')).order_by('doc__title', 'figure__figure_id')
 
-    data = data.order_by('-doc__citation','doc__title', 'figure__header')
+    data = data.annotate(num_docs=Count('doc'))
+    #data = data.order_by('-doc__citation','doc__title', 'figure__header')
 
     pagi = Paginator(data, 30)
     page = request.GET.get('page')
