@@ -21,10 +21,10 @@
 <div class="container ">
     <div class="col-md-9">
     <div class="headline">
-        <h2><span class="icon-lab"></span>{{pinfo.product_desc}}</h2>
+        <h2><span class="icon-lab"></span>{{pinfo.product_desc|removetags:"name region_id value" }}</h2>
      </div>
     <ul class="list-inline">
-    <li><a class="btn-u rounded-2x" href="#"><span class="icon-cart"></span> Product Page</a></li>
+    <li><a class="btn-u rounded-2x" href="{{pinfo.url}}"><span class="icon-cart"></span> Product Page</a></li>
     <li><a class="btn-u btn-brd rounded-2x" href="#"><span class="icon-heart"></span> Favorite</a></li>
     <li><a class="btn-u btn-brd rounded-2x" href="#"><span class="icon-share"></span> Share</a></li>
 
@@ -61,7 +61,7 @@
     {% for item in docs_grp %}
         {% with item.list.0 as it %}
         <div class="inner-results">
-            <h5 class="citation"><a href="{{item.doc__src_address}}">{{item.grouper}}</a></h5>
+            <h5 class="citation"><a href="http://{{it.doc__src_address}}">{{item.grouper}}</a></h5>
             <h5 class="citation cite-author">{{it.doc__author|author_format}}</h5>
 
             <ul class="list-inline citation-tags">
@@ -90,7 +90,10 @@
         {% with fitem.list.0 as fit %}
             <div class="grid-boxes-in masonry-brick thumbnail thumbnail-style" style="width:256px">
                     <p><strong>{{ fit.doc__title}}</h6></strong></p>
+                    <a href="/figureview/{{ fit.figure_id }}"
+                            data-toggle="modal" data-target="#figure-modal-lg">
                     <img class="img-responsive img-bordered" src="{{fit.figure__url | plosone_figure_url:"medium" }}" />
+                    </a>
                     <div class="caption">
                         <p>{{ fit.figure__header}}</p>
                         <ul class="list-inline">
@@ -143,6 +146,12 @@
         {% include "search/widget_search_history.html" %}
     </div>
 
+    <div class="modal fade" id="figure-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 
 
 </div>
@@ -155,6 +164,11 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+  $('body').on('hidden.bs.modal', '.modal', function () {
+    $(this).removeData('bs.modal');
+  });
+
     var $container = $('.masonry');
 
     var gutter = 30;

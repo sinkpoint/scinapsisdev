@@ -19,3 +19,75 @@ body {
     font-size: 20px !important;
     font-weight: bold !important;
 }
+
+
+/*Panel Dark*/
+.panel-scp {
+   border-color: #a69d9f;
+}
+
+.panel-scp > .panel-heading {
+   background: none;
+   color: #a69d9f !important;
+   border-bottom: 1px solid #a69d9f;
+}
+
+.panel-purple .panel-heading {
+    background: none;
+    color: #9b6bcc !important;
+    border-bottom: 1px solid #9b6bcc;
+}
+
+
+.panel-default .panel-heading {
+    background: none;
+    color: #687074;
+    font-size: 1.2em;
+    padding: 10px 15px;
+}
+
+.panel-body a:hover {
+    color: #9b6bcc;
+}
+
+.panel-title {
+    color: #9b6bcc;
+}
+
+.panel-figure .panel-body {
+    padding: 0;
+}
+
+
+
+.panel-figure .img-bordered {
+    border-color: #9b6bcc;
+}
+
+
+@media (min-width: 992px) {
+    .loginbar .open > .dropdown-menu {
+      display: block !important;
+    }
+
+    .header-v1 .container > .navbar-header,
+    .header-v1 .container-fluid > .navbar-header,
+    .header-v1 .container > .navbar-collapse,
+    .header-v1 .container-fluid > .navbar-collapse {
+        margin-bottom: 20px;
+    }
+
+}
+
+.loginbar .dropdown > a:after, .loginbar .dropdown-submenu > a:after {
+  content: None;
+
+}
+
+.loginbar .dropdown {
+    cursor: pointer;
+}
+
+.owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
+    background-color: #9b6bcc !important;
+}

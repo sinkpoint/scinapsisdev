@@ -23,6 +23,8 @@ def author_format(value):
 
 @register.filter
 def plosone_figure_url(value, size='medium'):
+    if not value:
+        return ''
     from urlparse import urlparse, parse_qs
 
     uri = urlparse(value)

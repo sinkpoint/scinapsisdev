@@ -1,4 +1,5 @@
 from django import forms
+from search.models import PubTechProdResult, PubProductInfo
 
 class LoginForm(forms.Form):
     username = forms.CharField()
@@ -9,18 +10,22 @@ class LoginForm(forms.Form):
         passw = self.cleaned_data['password']
 
 class SearchFilterForm(forms.Form):
-    target_human = forms.BooleanField(label="human")
-    target_mouse = forms.BooleanField(label="mouse")
+    #COMPANIES=[('novus','Novus'),('abgent','Abgent')]
+    #company = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=COMPANIES)
+
+    target_human = forms.BooleanField(label="human", widget=forms.CheckboxInput(attrs={'onclick': 'this.form.submit();'}))
+    target_mouse = forms.BooleanField(label="mouse", widget=forms.CheckboxInput(attrs={'onclick': 'this.form.submit();'}))
     t = forms.CharField(widget=forms.HiddenInput())
     q = forms.CharField(widget=forms.HiddenInput())
 
     def __init__(self, queryset, *args, **kwargs):
         super(SearchFilterForm, self).__init__(*args, **kwargs)
-        suppliers = queryset.values('supplier').annotate()
-        com = [('','Company')]+[(s['supplier'],s['supplier']) for s in suppliers]
-        self.fields['company'] = forms.ChoiceField(choices=com)
+        suppliers = PubTechProdResult.objects.all().values('supplier').annotate().order_by('supplier')
+        com = [(s['supplier'],s['supplier']) for s in suppliers]
+        self.fields['company'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'onclick': 'this.form.submit();'}), choices=com)
 
-        hosts = queryset.values('prod__host').annotate()
-        ho = [('','Hosts')]+[(h['prod__host'],h['prod__host']) for h in hosts]
-        self.fields['host'] = forms.ChoiceField(choices=ho)
+        #hosts = PubProductInfo.objects.all().values('host').annotate().order_by('host')
+        hosts = PubTechProdResult.objects.all().values('prod__host').annotate().order_by('prod__host')
+        ho = [(h['prod__host'],h['prod__host']) for h in hosts]
+        self.fields['host'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'onclick': 'this.form.submit();'}), choices=ho)
 

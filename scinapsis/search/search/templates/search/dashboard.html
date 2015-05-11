@@ -1,4 +1,4 @@
-{% extends "search/index_base.html" %}
+{% extends "search/dash_base.html" %}
 
 {% block index_css %}
     <link rel="stylesheet" href="/static/css/c3.css">
@@ -51,7 +51,7 @@ Debug
 {{ cite_data }}
 </pre>
 -->
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="/static/bower_components/d3/d3.min.js"></script>
 <script src="/static/js/c3.min.js"></script>
 <script>
 
@@ -103,13 +103,18 @@ var chart1 = c3.generate({
     }
 });
 
+var chart_type = 'bar'
+if (data2[0].length > 2)
+{
+    chart_type = 'spline'
+}
 var chart2 = c3.generate({
     bindto: '#chart2',
     data: {
         // iris data from R
         x: 'year',
         columns: data2,
-        type : 'spline',
+        type : chart_type,
         onclick: function (d, i) {
             console.log("onclick", d, i);
         }

@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from search.models import PubTechProdResult
+from search.models import PubTechProdResult, PubProductInfo, ScinPubFigure
 from django.db.models import Count
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 
 import logging
 
@@ -118,19 +120,15 @@ def _search_query_constructor(request):
         if host:
             data = data.filter(prod__host=host)
 
-    if 'target_human' in m_query:
-        state = m_query['target_human']
-        if state == 'on':
-            data = data.filter(prod__reactivity_human=1)
+    if 'target-human' in m_query:
+        data = data.filter(prod__reactivity_human=1)
 
-    if 'target_mouse' in m_query:
-        state = m_query['target_mouse']
-        if state == 'on':
-            data = data.filter(prod__reactivity_mouse=1)
+    if 'target-mouse' in m_query:
+        data = data.filter(prod__reactivity_mouse=1)
 
     return (m_query, data)
 
-
+@login_required
 def dashboard(request):
     from datetime import date
     user = _get_user_info(request)
@@ -190,7 +188,7 @@ def dashboard(request):
     pass_data['request'] = request.GET
     return render(request, "search/dashboard.html", pass_data)
 
-
+@login_required
 def index(request):
     user = _get_user_info(request)
     if not user or user.is_anonymous():
@@ -208,10 +206,10 @@ def index(request):
     #     'doc__title', 'tech_parental_name', 'doc__publisher','doc__src_address',
     #     'doc__pdf_address','supplier', 'product_name').annotate(Count('figure__url')).order_by('doc__title', 'figure__figure_id')
 
-    data = data.annotate(num_docs=Count('doc'))
+    prod_data = data.values('prod_id').annotate(num_docs=Count('doc_id')).order_by('-num_docs')
     #data = data.order_by('-doc__citation','doc__title', 'figure__header')
 
-    pagi = Paginator(data, 30)
+    pagi = Paginator(prod_data, 10)
     page = request.GET.get('page')
     try:
         pdata = pagi.page(page)
@@ -222,10 +220,22 @@ def index(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         pdata = pagi.page(pagi.num_pages)
 
-    pass_data['data'] = pdata
+    obj_data = []
+    for i in pdata:
+        print i
+        entry = { 'num_docs': i['num_docs'] }
+        pid = i['prod_id']
+        entry['info'] = PubProductInfo.objects.get(pk=pid)
+
+        figs = PubTechProdResult.objects.filter(prod_id=pid, tech_parental_name=q_input['technique']).values('figure__url', 'figure_id', 'figure__header','figure__doc__citation').annotate(num_sentence=Count('sentence')).order_by('-figure__doc__citation','-num_sentence')
+        entry['figures'] = figs
+        obj_data.append(entry)
+
+    pass_data['data'] = obj_data
+    pass_data['pagi'] = pdata
 
     from .forms import SearchFilterForm
-    filter_form = SearchFilterForm(data, data=request.GET)
+    filter_form = SearchFilterForm(data, data=request.GET, auto_id=False)
     pass_data['filter_form'] = filter_form
 
     # suppliers = data.values('supplier').annotate()
@@ -236,6 +246,8 @@ def index(request):
 
     return render(request, "search/index.html", pass_data)
 
+
+@login_required
 def view(request, id):
     user = _get_user_info(request)
     if not user or user.is_anonymous():
@@ -255,3 +267,17 @@ def view(request, id):
     pass_data['figures'] = figures
 
     return render(request, "search/view.html", pass_data)
+
+def figure_view(request, id):
+    from django.template.loader import render_to_string
+
+    fig = ScinPubFigure.objects.filter(pk=id)[0]
+    passdata = {'figure':fig}
+    if request.is_ajax():
+        html = render_to_string('search/figure_modal.html', passdata)
+        return HttpResponse(html)
+    else:
+        return render(request, "search/figure_view.html", passdata)
+
+
+
