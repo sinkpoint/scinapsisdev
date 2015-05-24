@@ -22,11 +22,11 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 SECRET_KEY = 'z39xhuj48ebi(789-_68$iq6uz63a1zqpff5zc706_0zqwp9&%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -58,12 +58,10 @@ INSTALLED_APPS = (
   'django.contrib.staticfiles',
   'django.contrib.contenttypes',
   'social.apps.django_app.default',
-  'search',
   'taggit',
   'blog',
   'tinymce',
   'bootstrapform',
-  'autocomplete_light',
   'debug_toolbar'
 )
 
@@ -77,13 +75,6 @@ MIDDLEWARE_CLASSES = (
     'debug_toolbar.middleware.DebugToolbarMiddleware'
 )
 
-AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId',
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.google.GoogleOAuth',
-    'django.contrib.auth.backends.ModelBackend'
-)
 
 ROOT_URLCONF = 'mvp_landing.urls'
 
@@ -97,24 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-    'search_db': {
-        'NAME' : 'search_db',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'scinapsis',
-        'USER': 'root',
-        'PASSWORD': 'harahara'
-    },
-    'user_db' : {
-        'NAME' : 'search_db',
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME' : 'scp_users',
-        'USER': 'root',
-        'PASSWORD': 'harahara'
     }
 }
-
-DATABASE_ROUTERS = ['search.routers.SearchDbRouter']
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -146,16 +121,16 @@ TEMPLATE_DIRS = (
     os.path.join(os.path.dirname(PROJECT_DIR), "templates"),
 )
 
+STATIC_ROOT = ''
 if DEBUG:
     MEDIA_URL = '/media/'
-    STATIC_ROOT = ''
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
     STATICFILES_DIRS = (
        os.path.join(os.path.dirname(BASE_DIR), "static"),
     )
 
 else:
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+    STATIC_ROOT = '/Users/sinkpoint/dev/scinapsisdev/scinapsis/static'
 
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL,'tiny_mce')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")

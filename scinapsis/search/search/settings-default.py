@@ -20,16 +20,19 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 SECRET_KEY = 'guu*(e65ph=nzgc4%g7e@hy5yv%=71h9gl(cfe6^+nlzxwsal3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = (
+    'django.contrib.sites',
+    'grappelli.dashboard',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,9 +40,17 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social.apps.django_app.default',
+    'userprofile',
     'search',
     'bootstrapform',
-    'debug_toolbar'
+    'bootstrap3',
+    'debug_toolbar',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -59,14 +70,20 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     'django.core.context_processors.request',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+    'allauth.account.context_processors.account',
+    'allauth.socialaccount.context_processors.socialaccount'
 ]
 
 AUTHENTICATION_BACKENDS = (
-   'social.backends.facebook.FacebookOAuth2',
-   'social.backends.google.GoogleOAuth2',
-   'social.backends.twitter.TwitterOAuth',
+   # 'social.backends.facebook.FacebookOAuth2',
+   # 'social.backends.google.GoogleOAuth2',
+   # 'social.backends.twitter.TwitterOAuth',
    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend'
 )
+
+ACCOUNT_EMAIL_REQUIRED = True
 
 ROOT_URLCONF = 'search.urls'
 
@@ -115,13 +132,15 @@ EMAIL_PORT = 1025
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+
 ]
 
 STATIC_URL = '/static/'
 
 if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     MEDIA_URL = '/media/'
     STATIC_ROOT = ''
     MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "media")
@@ -130,7 +149,7 @@ if DEBUG:
     )
 
 else:
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static")
+    STATIC_ROOT = '/Users/sinkpoint/dev/scinapsis/scinapsis/static'
 
 
 #Template location
@@ -145,4 +164,12 @@ LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_FACEBOOK_KEY='1379985962300126'
 SOCIAL_AUTH_FACEBOOK_SECRET='b99684d153286079f2e15eeb5f6d3506'
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '454383567577-ufug19j75ga7s84tntant8utfhmre2dr.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'H2x7jiAUWXPjGVe1XB8k4oqI'
+
+LOGIN_URL = '/accounts/login/'
+SITE_ID = 1
+
+
+GRAPPELLI_INDEX_DASHBOARD = 'search.dashboard.CustomIndexDashboard'
 

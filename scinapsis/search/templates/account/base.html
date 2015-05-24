@@ -1,0 +1,17 @@
+{% extends "base_w_header.html" %}
+
+{% block base_content %}
+<div class="container">
+    <div class="login-panel panel panel-scp">
+        <div class="panel-heading">
+            <h1 class="panel-title">{% block title %}{% endblock %}</h3>
+        </div>
+        <div class="panel-body">
+        {% block inner_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
