@@ -61,18 +61,18 @@
     {% for item in docs_grp %}
         {% with item.list.0 as it %}
         <div class="inner-results">
-            <h5 class="citation"><a href="http://{{it.doc__src_address}}">{{item.grouper}}</a></h5>
+            <h5 class="citation"><a href="{{it.doc__src_address}}">{{item.grouper}}</a></h5>
             <h5 class="citation cite-author">{{it.doc__author|author_format}}</h5>
 
             <ul class="list-inline citation-tags">
-                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span> Cited by {{it.doc__citation}}</span></li>
-                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span> {{it.doc__publisher}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><i class="icon-book2"></i> Cited by {{it.doc__citation}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><i class="icon-book2"></i> {{it.doc__publisher}} {{it.doc__pub_date| date:'Y'}}</span></li>
                 <!--
                 <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-barcode colored"></span> DOI:{{it.doc__doc_id}}</span></li>
                 -->
                 {% for i in item.list %}
-                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><span class="icon-microscope colored">
-                    </span>{{i.tech_parental_name}}</span></li>
+                <li><span class="btn-u btn-brd rounded-2x btn-u-default btn-u-xs "><i class="icon-microscope">
+                    </i>{{i.technique_group}}</span></li>
                 {% endfor %}
             </ul>
         </div>
@@ -89,7 +89,7 @@
     {% for fitem in figure_grp %}
         {% with fitem.list.0 as fit %}
             <div class="grid-boxes-in masonry-brick thumbnail thumbnail-style" style="width:256px">
-                    <p><strong>{{ fit.doc__title}}</h6></strong></p>
+                    <p><strong>{{ fit.doc__title}} - {{fit.doc__publisher}} {{fit.doc__pub_date|date:'Y'}}</h6></strong></p>
                     <a href="/figureview/{{ fit.figure_id }}"
                             data-toggle="modal" data-target="#figure-modal-lg">
                     <img class="img-responsive img-bordered" src="{{fit.figure__url | plosone_figure_url:"medium" }}" />
@@ -98,8 +98,8 @@
                         <p>{{ fit.figure__header}}</p>
                         <ul class="list-inline">
                         {% for i in fitem.list %}
-                            <li><span class="btn-u btn-brd btn-u-default rounded-2x btn-u-xs "><span class="icon-microscope colored">
-                                </span>{{i.tech_parental_name}}</span></li>
+                            <li><span class="btn-u btn-brd btn-u-default rounded-2x btn-u-xs "><span class="icon-microscope">
+                                </span>{{i.technique_group}}</span></li>
                         {% endfor %}
                         </ul>
                     </div>

@@ -3,6 +3,19 @@ body {
     color: #333;
 }
 
+.citation {
+    margin: 0.1em 0;
+    padding: 0;
+}
+.cite-author {
+    color: #888;
+}
+
+.citation-tags li {
+    margin: 0 3px;
+    padding: 0;
+}
+
 .post_meta {
     color: #777;
 }
@@ -90,4 +103,13 @@ body {
 
 .owl-theme .owl-dots .owl-dot.active span, .owl-theme .owl-dots .owl-dot:hover span {
     background-color: #9b6bcc !important;
+}
+
+.login-panel {
+    width: 40%;
+    margin: 2em auto;
+}
+
+.modal-header {
+    border: none;
 }

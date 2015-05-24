@@ -22,8 +22,8 @@ class PubProductInfo(models.Model):
     application = models.CharField(max_length=300, blank=True)
     host = models.CharField(max_length=100, blank=True)
     immunogen = models.CharField(max_length=1500, blank=True)
-    reactivity_human = models.IntegerField(blank=True, null=True)
-    reactivity_mouse = models.IntegerField(blank=True, null=True)
+    reactivity_human = models.BooleanField(default=False,blank=True)
+    reactivity_mouse = models.BooleanField(default=False,blank=True)
     size = models.CharField(max_length=10, blank=True)
     price_usd = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     primary_accession = models.CharField(max_length=20, blank=True)
@@ -33,9 +33,14 @@ class PubProductInfo(models.Model):
     antigen_source = models.CharField(max_length=150, blank=True)
     clonality = models.CharField(max_length=10, blank=True)
 
+    def __unicode__(self):
+        name = self.catalog_nb
+        return u'%s' % name
+
     class Meta:
         managed = False
         db_table = 'pub_product_info'
+        verbose_name = 'Product'
 
 
 class PubProductName(models.Model):
@@ -63,6 +68,9 @@ class PubProductResult(models.Model):
 class PubSupplierList(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     supplier = models.CharField(max_length=100, blank=True)
+
+    def __unicode__(self):
+        return u'%s' % self.supplier
 
     class Meta:
         managed = False
@@ -93,16 +101,23 @@ class PubTechProdResult(models.Model):
     product_name = models.CharField(max_length=40, blank=True)
     sentence = models.TextField(blank=True)
     id = models.IntegerField(primary_key=True)  # AutoField?
+    technique_group = models.CharField(max_length=100,blank=True)
+    is_shown = models.BooleanField(default=False)
 
     class Meta:
         managed = False
         db_table = 'pub_tech_prod_result'
+        verbose_name = 'Search List'
 
 
 class PubTechniqueList(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     parental_name = models.CharField(max_length=100, blank=True)
     alternative = models.CharField(max_length=100, blank=True)
+    technique_group = models.CharField(max_length=100, blank=True)
+
+    def __unicode__(self):
+        return u'%s' % (self.alternative+' | '+self.parental_name)
 
     class Meta:
         managed = False
@@ -115,6 +130,7 @@ class PubTechniqueResult(models.Model):
     tech = models.ForeignKey(PubTechniqueList, blank=True, null=True)
     tech_parental_name = models.CharField(max_length=100, blank=True)
     tech_alternative = models.CharField(max_length=100, blank=True)
+    technique_group = models.CharField(max_length=100, blank=True)
 
     class Meta:
         managed = False
@@ -128,10 +144,15 @@ class ScinPubFigure(models.Model):
     content = models.TextField()
     url = models.CharField(max_length=100)
     doc = models.ForeignKey('ScinPubMeta', blank=True, null=True)
+    thumbnail = models.CharField(max_length=200, blank=True)
+
+    def __unicode__(self):
+        return u'%s' % self.header
 
     class Meta:
         managed = False
         db_table = 'scin_pub_figure'
+        verbose_name = 'Figure'
 
 
 class ScinPubMaterialNMethod(models.Model):
@@ -169,9 +190,13 @@ class ScinPubMeta(models.Model):
     views = models.IntegerField(blank=True, null=True)
     citation = models.IntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return u'%s' % (self.title)
+
     class Meta:
         managed = False
         db_table = 'scin_pub_meta'
+        verbose_name = 'Publication'
 
 
 class ScinPubResult(models.Model):

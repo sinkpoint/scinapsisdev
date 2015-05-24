@@ -70,18 +70,18 @@
 
                 <li><a class="btn-u btn-brd rounded-2x  btn-u-purple" href="{{entry.info.url}}">
                     <span class="icon-company"></span> {{entry.info.supplier.supplier}}</a></li>
-                <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default"><span class="icon-book2 colored"></span>
+                <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default"><i class="icon-book2"></i>
                 Cited by {{entry.num_docs}}</a></li>
             </ul>
             <ul class="list-inline citation-tags">
                 {% if entry.info.reactivity_human == 1 %}
-                    <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default  "><span class="icon-target2"></span>
+                    <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default  "><i class="icon-target2"></i>
                         Human
                     </a></li>
                 {% endif %}
 
                 {% if entry.info.reactivity_mouse == 1 %}
-                    <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default "><span class="icon-target2"></span>
+                    <li><a class="btn-u btn-brd rounded-2x disabled btn-u-default "><i class="icon-target2"></i>
                         Mouse
                     </a></li>
                 {% endif %}
@@ -125,7 +125,7 @@
         <ul class="pagination">
             <li>
                 {% if pagi.has_previous %}
-                    <a href="?page={{ pagi.previous_page_number }}">previous</a>
+                    <a href="?page={{ pagi.previous_page_number }}{% for key, value in request.GET.items %}{% if key != "page" %}&{{ key }}={{ value }}{% endif %}{% endfor %}">previous</a>
                 {% endif %}
             </li>
             {% for p in pagi.paginator.page_range %}
@@ -142,7 +142,7 @@
             {% endfor %}
             <li>
                 {% if pagi.has_next %}
-                    <a href="?page={{ pagi.next_page_number }}">next</a>
+                    <a href="?page={{ pagi.next_page_number }}{% for key, value in request.GET.items %}{% if key != "page" %}&{{ key }}={{ value }}{% endif %}{% endfor %}">next</a>
                 {% endif %}
             </li>
         </ul>

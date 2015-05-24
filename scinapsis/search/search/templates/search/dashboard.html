@@ -1,7 +1,7 @@
 {% extends "search/dash_base.html" %}
 
 {% block index_css %}
-    <link rel="stylesheet" href="/static/css/c3.css">
+    <link rel="stylesheet" href="/static/bower_components/c3/c3.min.css">
     <style TYPE="text/css">
     <!--
         .chart-contain {
@@ -9,6 +9,12 @@
         }
         .c3-line {
             stroke-width: 3px;
+        }
+        .c3-axis-x-label, .c3-axis-y-label {
+            font-size: 1.5em !important;
+        }
+        tspan {
+            font-size: 1.3em;
         }
     -->
     </style>
@@ -125,11 +131,20 @@ var chart2 = c3.generate({
     },
     axis: {
         x: {
-            label: 'Year'
+            label: {
+                text:'Year',
+                position:'inner-end'
+            }
         },
         y: {
-            label: '# of Citations'
+            label: {
+                text: '# of Citations',
+                position: 'outer-top',
+            }
         }
+    },
+    padding: {
+        right: 10
     }
 });
 

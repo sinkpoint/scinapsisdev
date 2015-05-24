@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block css %}
-	    <link rel="stylesheet" href="/static/assets/plugins/flexslider/flexslider.css">
+    <link rel="stylesheet" href="/static/assets/plugins/flexslider/flexslider.css">
 
 	    <!-- CSS Page Style -->
-	    <link rel="stylesheet" href="/static/assets/css/pages/page_contact.css">
+        <link rel="stylesheet" href="/static/assets/css/one.style.css">
 
 	    <!-- CSS Theme -->
 	    <link rel="stylesheet" href="/static/assets/css/theme-colors/purple.css">
 
 	    <!-- CSS Customization -->
+        <link rel="stylesheet" href="/static/css/pages/page_search.css">
+        <link rel="stylesheet" href="/static/css/my_theme.css">
 	    <link rel="stylesheet" href="/static/assets/css/custom.css">
         {% endblock %}
 
@@ -19,18 +21,41 @@
 
 <!--=== Content Part ===-->
 
-<div class="container content">
-<div class="headline"><h2>About Scinapsis</h2></div>
-<p>Scinapsis is founded by a group of life science researchers at the University of Toronto.  We understand and share difficulties common to fellow researchers.  We are passionate about increasing productivity of research by creating new tools to accelerate discoveries.</p>
+<div class="col-md-12 text-center panels-w-bg" style="margin-top: 0 !important; margin-bottom: 4em">
+    <div class="container title-v1">
 
-    <div class="headline"><h2>Search By Evidence</h2></div>
+        <h2>About Scinapsis</h2>
+        <p >Scinapsis is founded by a group of life science researchers at the University of Toronto.  We understand and share difficulties common to fellow researchers.  We are passionate about increasing productivity of research by creating new tools to accelerate discoveries.</p>
+    </div>
+
+    <img class="img-responsive center-block" width="70%" src="/static/images/sliders/slide2.png" />
+
+</div>
+
+<div class="container title-v1">
+    <h2>Evidence-Of-Use</h2>
+
+    <p><strong>Peer-reviewed publications are the new catalog for laboratory consumables.</strong>
+    Researchers often look for evidence-of-use in literature before buying a new antibody or reagent.
+    </p>
+
+</div>
+
+<div class="col-md-12 text-center">
+    <img class="img-responsive center-block" width="60%" src="/static/images/sliders/slide3.png" />
+</div>
 
 
+<div class="col-md-12 text-center panels-w-bg" style="margin-bottom: 3em">
+    <div class="container title-v1">
+    <h2>Search By Evidence</h2>
+    <p>Scinapsis is a service for scientists, providing <strong>quick</strong> and <strong>easy</strong> access to evidence-of-use for different antibodies and reagents in peer-reviewed literature.  Through Scinapsis, scientists will be able to search antibodies or reagents by evidence, as opposed to catalog number alone.</p>
+    </div>
+    <img class="img-responsive center-block" width="60%" src="/static/images/sliders/slide4.png" />
+</div>
 
-            <p><strong>Peer-reviewed publications are the new catalog for laboratory consumables.</strong>
-            Researchers often look for evidence-of-use in literature before buying a new antibody or reagent.  Scinapsis is a FREE service for scientists, providing <strong>quick</strong> and <strong>easy</strong> access to evidence-of-use for different antibodies and reagents in peer-reviewed literature.  Through Scinapsis, scientists will be able to search antibodies or reagents by evidence, as opposed to catalog number alone.</p>
 
-
+<div class="container">
 
     <!--/row-->
 
@@ -129,11 +154,11 @@
 <!-- JS Page Level -->
 <script type="text/javascript" src="/static/assets/js/app.js"></script>
 <script type="text/javascript" src="/static/assets/js/pages/page_contacts.js"></script>
+
 <script type="text/javascript">
     jQuery(document).ready(function() {
         App.init();
-        App.initSliders();
-        ContactPage.initMap();
+        LayerSlider.initLayerSlider();
     });
 </script>
 {% endblock %}

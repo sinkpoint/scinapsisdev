@@ -10,7 +10,7 @@ class HomeBlogView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeBlogView, self).get_context_data(**kwargs)
-        context['pinned'] = Post.objects.select_related().filter(pinned=True, postimage__is_cover=True)
+        context['pinned'] = Post.objects.select_related().filter(pinned=True, postimage__is_cover=True)[:3]
         return context
 
 class ContactView(FormView):

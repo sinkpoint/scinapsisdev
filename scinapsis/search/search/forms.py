@@ -20,12 +20,12 @@ class SearchFilterForm(forms.Form):
 
     def __init__(self, queryset, *args, **kwargs):
         super(SearchFilterForm, self).__init__(*args, **kwargs)
-        suppliers = PubTechProdResult.objects.all().values('supplier').annotate().order_by('supplier')
+        suppliers = PubTechProdResult.objects.all().values('supplier').distinct()
         com = [(s['supplier'],s['supplier']) for s in suppliers]
         self.fields['company'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'onclick': 'this.form.submit();'}), choices=com)
 
         #hosts = PubProductInfo.objects.all().values('host').annotate().order_by('host')
-        hosts = PubTechProdResult.objects.all().values('prod__host').annotate().order_by('prod__host')
+        hosts = PubTechProdResult.objects.all().values('prod__host').distinct()
         ho = [(h['prod__host'],h['prod__host']) for h in hosts]
         self.fields['host'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(attrs={'onclick': 'this.form.submit();'}), choices=ho)
 

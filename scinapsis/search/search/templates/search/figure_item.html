@@ -7,10 +7,10 @@
 
         <ul class="list-inline citation-tags">
 
-            <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>
-            {{figure.doc.publisher}}</span></li>
+            <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><i class="icon-book2"></i>
+            {{figure.doc.publisher}} {{figure.doc.pub_date|date:'Y'}}</span></li>
 
-            <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><span class="icon-book2 colored"></span>
+            <li><span class="btn-u btn-brd rounded-2x btn-u-xs btn-u-default"><i class="icon-book2"></i>
             Cited by {{figure.doc.citation}}</span></li>
         </ul>
 
