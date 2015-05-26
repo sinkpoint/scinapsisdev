@@ -29,7 +29,7 @@
     background-image: url('/static/images/white_shadow_mid.png'), url('/static/images/search_bg_side_bw.svg') !important;
     background-position: center !important;
     background-repeat: no-repeat repeat-y!important;
-    background-size: auto, 50px !important;
+    background-size: 100%, 50px !important;
 }
 .navbar-form {
     border: none !important;
@@ -42,6 +42,13 @@
     border-bottom: 1px solid #9b6bcc !important;
 }
 
+.search-input-group {
+    padding: 5px 0;
+}
+.search-img {
+    display: block;
+    float: left;
+    margin: 0 10px;
 }
 -->
 </style>
@@ -66,25 +73,29 @@
 
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
+                <!--
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="fa fa-bars"></span>
                     </button>
+                -->
                 <!--=== Search Block ===-->
                 <div class="search-block">
-                    <div class="col-xs-3">
-                    <a href="/">
-                        <img class="img-responsive pull-right" id="logo-header" src="/static/images/scinapsis_logo_only.svg" width="50px" alt="Logo">
-                    </a>
+                    <form method="GET" role="search" action="/">
+                    <div class="col-sm-8 col-sm-offset-1">
+                    <div class="search-img">
+                        <a href="/"><img src="/static/images/scinapsis_logo_only.svg" width="40px" alt="Logo">
+                        </a>
                     </div>
-                    <div class="col-xs-6 col-xs-offset-3 input-group">
-                        <form class="navbar-form" method="GET" role="search" action="/">
-                                <input type="text" class="form-control search_input" placeholder="Search" name="q" value="{{query_set.keywords}}" style="width: 80%;">
-                                <span class="input-group-btn">
-                                    <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
-                                </span>
-                        </form>
+
+                        <div class="input-group search-input-group">
+                            <input type="text" class="form-control search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
+                            </span>
+                        </div>
                     </div>
+                    </form>
                 </div>
                 <!--/container-->
                 </div>
