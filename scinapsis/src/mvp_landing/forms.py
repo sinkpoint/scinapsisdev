@@ -13,6 +13,6 @@ class ContactForm(forms.Form):
         sender = self.cleaned_data['email']
         #cc_myself = form.cleaned_data['cc_myself']
 
-        recipients = ['qixiang.chen@gmail.com']
+        recipients = ['info@scinapsis.com']
 
         send_mail(subject, message, sender, recipients)

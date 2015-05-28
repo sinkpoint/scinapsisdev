@@ -15,13 +15,14 @@ with open(file, 'rU') as csvfile:
     for row in reader:
         row = map(str.lower, row)
         my_password = User.objects.make_random_password()
-        row.append(my_password)
-        print ', '.join(row),
+        # row.append(my_password)
         res.append(row)
 
         user_name = '.'.join(map(remove_space,row[:2]))
         #hash_pw = make_password(my_password)
+        row.append(user_name)
 
+        print ', '.join(row)
         #print user_name,hash_pw
         user = User(first_name=row[0],
                     last_name=row[1],
@@ -31,9 +32,9 @@ with open(file, 'rU') as csvfile:
         user.set_password(my_password)
         users.append(user)
 
-User.objects.bulk_create(users)
+#User.objects.bulk_create(users)
 
-with open('account_passwords.csv', 'wb') as fp:
+with open('account_details.csv', 'wb') as fp:
     writer = csv.writer(fp, delimiter=',', quoting=csv.QUOTE_NONE)
-    writer.writerow(['first','last','email','password'])
+    #writer.writerow(['first','last','email','password'])
     writer.writerows(res)

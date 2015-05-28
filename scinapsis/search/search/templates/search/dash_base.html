@@ -82,20 +82,23 @@
 <!--=== Search Block ===-->
 <div class="search-block">
     <div class="container">
+        <div class="row">
         <div class="col-md-6 col-md-offset-3" style="margin-bottom: 1.5em">
             <a href="/">
                 <img class="img-responsive center-block" src="/static/images/scinapsis-logo-h.svg" width="320px" alt="Logo">
             </a>
         </div>
-
+        </div>
+        <div class="row" style="margin: 0 0.5em">
         <form method="GET" role="search" action="/">
-        <div class="col-sm-6 col-sm-offset-3 input-group">
+        <div class="col-sm-8 col-sm-offset-2 input-group">
                 <input type="text" class="form-control search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
                 <span class="input-group-btn">
                     <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
                 </span>
         </div>
         </form>
+        </div>
     </div>
 </div>
 <!--/container-->

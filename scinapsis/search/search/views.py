@@ -15,14 +15,13 @@ def _get_user_info(req):
 
 def _get_catids_from_q(query):
     if not query:
-        return []
+        return None
 
     from search.models import PubProductName
     from django.db.models import Q
 
     cat_ids = PubProductName.objects.filter(Q(name__icontains=query)).values('prod_id').annotate()
     cat_ids = [ i['prod_id'] for i in cat_ids]
-    logging.warning(cat_ids)
     return cat_ids
 
 def logout_view(request):
@@ -89,6 +88,8 @@ def _search_query_constructor(request):
             cat_ids = _get_catids_from_q(kw)
             if cat_ids:
                 data = data.filter(prod_id__in=cat_ids)
+            elif type(cat_ids) is list and len(cat_ids) == 0:
+                data = []
 
             if 'kw_history' not in request.session:
                 request.session['kw_history'] = [kw]
@@ -139,51 +140,54 @@ def dashboard(request):
 
     q_input, data = _search_query_constructor(request)
     pass_data['query_set'] = q_input
-    tech_name_group = 'technique_group'
-    tech_stats = data.values(tech_name_group).annotate(Count(tech_name_group)).order_by(tech_name_group)
     tech_data = []
-    for i in tech_stats:
-        ks = i.keys()
-        tech_data.append([str(i[ks[0]]),i[ks[1]]])
+    cite_pass = []
+    if data:
+        tech_name_group = 'technique_group'
+        tech_stats = data.values(tech_name_group).annotate(Count(tech_name_group)).order_by(tech_name_group)
 
-    catids = []
-    if 'keywords' in q_input:
-        catids = _get_catids_from_q(q_input['keywords'])
+        for i in tech_stats:
+            ks = i.keys()
+            tech_data.append([str(i[ks[0]]),i[ks[1]]])
 
-    sql = """
-    SELECT `pub_tech_prod_result`.`technique_group`, year(`scin_pub_meta`.`pub_date`) AS `pub_year`, COUNT(*) AS `cite_count`
-    FROM `pub_tech_prod_result` INNER JOIN `scin_pub_meta` ON ( `pub_tech_prod_result`.`doc_id` = `scin_pub_meta`.`id` )
-    """
+        catids = []
+        if 'keywords' in q_input:
+            catids = _get_catids_from_q(q_input['keywords'])
 
-    if catids and len(catids) > 0:
-        sql += " WHERE (`pub_tech_prod_result`.`prod_id` IN ( "
-        sql += ','.join(str(id) for id in catids)
-        sql += ")) "
+        sql = """
+        SELECT `pub_tech_prod_result`.`technique_group`, year(`scin_pub_meta`.`pub_date`) AS `pub_year`, COUNT(*) AS `cite_count`
+        FROM `pub_tech_prod_result` INNER JOIN `scin_pub_meta` ON ( `pub_tech_prod_result`.`doc_id` = `scin_pub_meta`.`id` )
+        """
 
-    sql += "GROUP BY `pub_year`,`pub_tech_prod_result`.`technique_group` ORDER BY `pub_tech_prod_result`.`technique_group`,`pub_year` ASC"
-    print sql
-    from django.db import connections
-    with connections['search_db'].cursor() as cursor:
-        cursor.execute(sql)
-        qres = [i for i in cursor.fetchall()]
+        if type(catids) is list and len(catids) > 0:
+            sql += " WHERE (`pub_tech_prod_result`.`prod_id` IN ( "
+            sql += ','.join(str(id) for id in catids)
+            sql += ")) "
 
-    if qres:
-        #qs = data.filter(doc__pub_date__lte=date.today())
-        #qs = data.extra(select={'pub_year' : 'year(pub_date)'})
-        #cite_stats = qs.values('pub_year', 'technique_group').annotate(Count('pub_year')).order_by('technique_group')
-        import pandas as pd
-        cite_df = pd.DataFrame(qres, columns=['technique', 'year', 'citations'])
-        cite_df = cite_df.pivot(index='technique', columns='year', values='citations')
-        #cite_df = cite_df.fillna(0)
+        sql += "GROUP BY `pub_year`,`pub_tech_prod_result`.`technique_group` ORDER BY `pub_tech_prod_result`.`technique_group`,`pub_year` ASC"
+        print sql
+        from django.db import connections
+        with connections['search_db'].cursor() as cursor:
+            cursor.execute(sql)
+            qres = [i for i in cursor.fetchall()]
 
-        cite_data = [['year']+[str(i) for i in cite_df.index.values]] + list(cite_df.T.itertuples())
-        cite_data = [list(i) for i in zip(*cite_data)]
+        if qres:
+            #qs = data.filter(doc__pub_date__lte=date.today())
+            #qs = data.extra(select={'pub_year' : 'year(pub_date)'})
+            #cite_stats = qs.values('pub_year', 'technique_group').annotate(Count('pub_year')).order_by('technique_group')
+            import pandas as pd
+            cite_df = pd.DataFrame(qres, columns=['technique', 'year', 'citations'])
+            cite_df = cite_df.pivot(index='technique', columns='year', values='citations')
+            #cite_df = cite_df.fillna(0)
 
-        from django.http import JsonResponse
-        cite_json = JsonResponse(cite_data, safe=False)
-        cite_pass = cite_json.content
-    else:
-        cite_pass = []
+            cite_data = [['year']+[str(i) for i in cite_df.index.values]] + list(cite_df.T.itertuples())
+            cite_data = [list(i) for i in zip(*cite_data)]
+
+            from django.http import JsonResponse
+            cite_json = JsonResponse(cite_data, safe=False)
+            cite_pass = cite_json.content
+        else:
+            cite_pass = []
     pass_data['tech_data'] = tech_data
     pass_data['cite_data'] = cite_pass
     pass_data['request'] = request.GET
