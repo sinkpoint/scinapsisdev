@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from search import settings
 
-file = 'closed_beta_accounts.csv'
+file = 'accounts_in.csv'
 
 def remove_space(input):
     return input.replace(' ','')
@@ -14,13 +14,17 @@ with open(file, 'rU') as csvfile:
     reader = csv.reader(csvfile, delimiter=',', quoting=csv.QUOTE_NONE)
     for row in reader:
         row = map(str.lower, row)
-        my_password = User.objects.make_random_password()
-        # row.append(my_password)
-        res.append(row)
+        row = map(str.strip, row)
 
         user_name = '.'.join(map(remove_space,row[:2]))
         #hash_pw = make_password(my_password)
         row.append(user_name)
+
+        my_password = User.objects.make_random_password()
+        row.append(my_password)
+        res.append(row)
+
+
 
         print ', '.join(row)
         #print user_name,hash_pw
@@ -32,9 +36,9 @@ with open(file, 'rU') as csvfile:
         user.set_password(my_password)
         users.append(user)
 
-#User.objects.bulk_create(users)
+User.objects.bulk_create(users)
 
-with open('account_details.csv', 'wb') as fp:
+with open('accounts_out.csv', 'wb') as fp:
     writer = csv.writer(fp, delimiter=',', quoting=csv.QUOTE_NONE)
     #writer.writerow(['first','last','email','password'])
     writer.writerows(res)
