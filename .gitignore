@@ -52,3 +52,8 @@ docs/_build/
 
 .DS_Store
 .idea
+
+#project specific
+*/media/*
+settings.py
+*dev.*
