@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.template import Context
 from django.template.loader import render_to_string, get_template
 from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 import csv
 import os
 
@@ -20,7 +21,7 @@ with open(file, 'rU') as fp:
             'subject':subject,
             'data':{'firstname':row['first'].title(),'login':row['username'],'password':row['password']}
         })
-        ctx.append(row)
+        #ctx.append(row)
 
 from django.template import Template
 
@@ -30,8 +31,10 @@ with open(template_file,'rU') as fp:
 
 mtemp = Template(template_buf)
 for i in ctx:
+    print i	
     message = mtemp.render(Context(i['data']))
-    print message
     msg = EmailMessage(i['subject'], message, to=i['to'], from_email=from_email)
     msg.content_subtype = 'html'
     msg.send()
+    #send_mail(i['subject'], '', from_email, i['to'], html_message=message)
+
