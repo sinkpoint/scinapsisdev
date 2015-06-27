@@ -51,7 +51,8 @@ class PubProductName(models.Model):
     class Meta:
         managed = False
         db_table = 'pub_product_name'
-
+    def __unicode__(self):
+        return u'%s' % self.name
 
 class PubProductResult(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
@@ -108,7 +109,7 @@ class PubTechProdResult(models.Model):
         managed = False
         db_table = 'pub_tech_prod_result'
         verbose_name = 'Search List'
-
+    
 
 class PubTechniqueList(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?

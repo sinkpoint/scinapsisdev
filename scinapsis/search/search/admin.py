@@ -73,3 +73,8 @@ class AdminPubProductInfo(admin.ModelAdmin):
         return '<a href="%s">%s</a>' % (obj.url,obj.url)
     url_link.allow_tags = True
 
+@admin.register(PubProductName)
+class AdminPubProductName(admin.ModelAdmin):
+    pass
+
+

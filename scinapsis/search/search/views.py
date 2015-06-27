@@ -1,11 +1,30 @@
 from django.shortcuts import render
-from search.models import PubTechProdResult, PubProductInfo, ScinPubFigure
+from search.models import PubTechProdResult, PubProductInfo, ScinPubFigure,PubProductName
 from django.db.models import Count
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-
+from django.core import serializers
+from django.http import JsonResponse
+from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 import logging
+from django.template import loader,Context
+
+
+
+@csrf_exempt
+def typeahead_view(request):
+    if request.is_ajax():        
+        query = request.GET.get('query',None)  
+        if query:    
+          product = PubProductName.objects.filter(Q(name__icontains=query)).values('name','id') 
+          print product   
+          return  JsonResponse(list(product),safe=False)
+        else:
+            "Prefetch data if no query is provided to increase speed"
+            product = PubProductName.objects.all().values('name','id')
+            return JsonResponse(list(product),safe=False)
 
 def _get_user_info(req):
     if req.user:
@@ -16,9 +35,7 @@ def _get_user_info(req):
 def _get_catids_from_q(query):
     if not query:
         return None
-
-    from search.models import PubProductName
-    from django.db.models import Q
+   
 
     cat_ids = PubProductName.objects.filter(Q(name__icontains=query)).values('prod_id').annotate()
     cat_ids = [ i['prod_id'] for i in cat_ids]

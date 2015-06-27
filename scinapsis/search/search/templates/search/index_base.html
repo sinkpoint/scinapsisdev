@@ -82,7 +82,7 @@
                 -->
                 <!--=== Search Block ===-->
                 <div class="search-block">
-                    <form method="GET" role="search" action="/">
+                    <form method="GET" id='search-form' role="search" action="/">
                     <div class="col-sm-8 col-sm-offset-2">
                     <div class="search-img">
                         <a href="/"><img src="/static/images/scinapsis_logo_only.svg" width="40px" alt="Logo">
@@ -90,7 +90,7 @@
                     </div>
 
                         <div class="input-group search-input-group">
-                            <input type="text" class="form-control search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
+                            <input type="text" class="form-control typeahead search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
                             </span>

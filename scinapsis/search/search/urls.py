@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-
+from search import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -24,7 +24,9 @@ urlpatterns += patterns('search.views',
     url(r'^logout/?$', 'logout_view'),
     url(r'^admin/?', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^userprofile/?', include('userprofile.urls', namespace="userprofile"))
+    url(r'^userprofile/?', include('userprofile.urls', namespace="userprofile")),
+    url(r'^typeahead-search/?', views.typeahead_view, name="typeahead_search")
+    
 )
 
 if settings.DEBUG:

@@ -35,6 +35,7 @@
         .header-v1 .open > .dropdown-menu {
           display: block;
         }
+        
     -->
     </style>
     {% block css %}
@@ -125,7 +126,46 @@
 <script type="text/javascript" src="/static/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- JS Implementing Plugins -->
 <script type="text/javascript" src="/static/assets/plugins/back-to-top.js"></script>
+<script src="/static/js/ajax_setup.js"></script>
+<script src="/static/js/typeahead.bundle.js"></script>
 
+
+
+<script type="text/javascript">
+// Type ahead / suggestion function
+jQuery(document).ready(function() {
+ // Initializes the data source for the suggestion engine
+ var productName = new Bloodhound({
+  datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+  prefetch: '/typeahead-search/', // Important for browser caching to increase speed
+  remote: {
+    url: '/typeahead-search/?query=%QUERY',
+    wildcard: '%QUERY'
+  }
+});
+ 
+$('.typeahead').typeahead({
+  hint: true,
+  highlight: true,
+  minLength: 2,
+  },
+  {name: 'name',
+  display: 'name',
+  source: productName,
+  limit: 100,
+  
+});  
+
+// Callback after selection is made
+$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+   console.log(suggestion)
+    url = "list?q="+suggestion.name+"&t="+"";           
+    window.location.href=url; 
+});   
+        
+    });
+</script>
 
 {% block js %}
 {% endblock %}

@@ -90,9 +90,10 @@
         </div>
         </div>
         <div class="row" style="margin: 0 0.5em">
-        <form method="GET" role="search" action="/">
+        <form method="GET" id = 'search-form' role="search" action="/">
+      
         <div class="col-sm-8 col-sm-offset-2 input-group">
-                <input type="text" class="form-control search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
+                <input type="text" class="form-control typeahead search_input" placeholder="Search" name="q" value="{{query_set.keywords}}">
                 <span class="input-group-btn">
                     <button type="submit" class="btn-u btn-u-purple"><span class="icon-search"></span></button>
                 </span>
