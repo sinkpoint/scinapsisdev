@@ -1,0 +1,14 @@
+{% extends "search/index_base.html" %}
+
+{% block base_content %}
+    <div class="row text-center">
+        <img src="/static/images/404.svg" width="256px"/>
+
+        <h2 class="centered-block">Your location is outside of our current servicing area</h2>
+        <p>IP: {{ip}} <br />
+        City: {{city}}
+        </p>
+
+        <p><a href="#">Contact Us</a> to inquire about adding your region.</p>
+    </div>
+{% endblock %}

@@ -25,7 +25,9 @@ urlpatterns += patterns('search.views',
     url(r'^admin/?', include(admin.site.urls)),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^userprofile/?', include('userprofile.urls', namespace="userprofile")),
-    url(r'^typeahead-search/?', views.typeahead_view, name="typeahead_search")
+    url(r'^typeahead-search/?', views.typeahead_view, name="typeahead_search"),
+
+    #url(r'^region_error/?$', name="region_error")
     
 )
 

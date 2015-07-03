@@ -72,24 +72,52 @@ slicer1 = function(array) {
   return d3.max(array.slice(1));
 };
 
+
+// "#98abc5", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"
+
+// #1a1334    #26294a    #01545a    
+// #017351    #03c383    #aad962    
+// #fbbf45    #ef6a32    #ed0345    
+// #a12a5e    #710162    #110141    
+
+// #f7fcfd    #e0ecf4    #bfd3e6    
+// #9ebcda    #8c96c6    #8c6bb1    
+// #88419d    #810f7c    #4d004b    
+
+color_range = ["#ff8c00","#e4bf80","#c94a53", "#98abc5", "#8c6bb1", "#6b486b" ];
+
+
+
+color_domain = [0,0.2,0.4,0.6,0.8,1]
 // var color_func = d3.scale.linear()
 //     .domain([d3.min(data, slicer1), d3.max(data, slicer1)])
-//     .range(["#ff8c00", "#6b486b", "#98abc5"]);
+//     .range(color_range);
 
-var  inner_scale = d3.scale.log()
+var  inner_scale = d3.scale.linear()
     .domain([d3.min(data, slicer1), d3.max(data, slicer1)]).range([0, 1]);
 var   outer_scale = d3.scale.linear()
-    .domain([0, 0.5, 1])
+    .domain(color_domain)
     .interpolate(d3.interpolateRgb)
-    .range(["#98abc5", "#ff8c00", "#6b486b"]);
+    .range(color_range);
+
+var c10 = d3.scale.ordinal()
+            .domain(data.slice(0))
+            .range(color_range);
+
 
 var colors = [];
 
 for ( var i in data)
 {
 
-    v = data[i][1]
-    c = outer_scale(inner_scale(v));
+    // color by value
+    //v = data[i][1]
+    //c = outer_scale(inner_scale(v));
+
+    // color by label
+    v = data[i][0]
+    c = c10(v)
+   
     colors.push(c);
 }
 

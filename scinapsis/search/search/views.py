@@ -18,9 +18,9 @@ def typeahead_view(request):
     if request.is_ajax():        
         query = request.GET.get('query',None)  
         if query:    
-          product = PubProductName.objects.filter(Q(name__icontains=query)).values('name','id') 
-          print product   
-          return  JsonResponse(list(product),safe=False)
+            product = PubProductName.objects.filter(Q(name__icontains=query)).values('name','id') 
+            print product   
+            return  JsonResponse(list(product),safe=False)
         else:
             "Prefetch data if no query is provided to increase speed"
             product = PubProductName.objects.all().values('name','id')
