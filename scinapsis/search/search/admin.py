@@ -44,7 +44,7 @@ class AdminPubTechProdResult(admin.ModelAdmin):
 class AdminDoc(admin.ModelAdmin):
     from django.contrib.admin import DateFieldListFilter
     exclude=('id',)
-    list_display = ('title','author','publisher','pub_date')
+    list_display = ('title','author','publisher','pub_date','immuno_index')
     search_fields = ['title','author']
     list_filter = ('publisher',('pub_date',DateFieldListFilter))
     change_list_template = "admin/change_list_filter_sidebar.html"
@@ -61,6 +61,13 @@ class AdminFigure(admin.ModelAdmin):
         return '<img src="%s" />' % url
     figure_thumbnail.allow_tags = True
 
+
+class PubProductNameInline(admin.TabularInline):
+    model = PubProductName
+class PubTechProdResultInline(admin.TabularInline):
+    model =PubTechProdResult
+    
+    
 @admin.register(PubProductInfo)
 class AdminPubProductInfo(admin.ModelAdmin):
     list_display = ('catalog_nb','product_desc','supplier','url_link')
@@ -68,13 +75,17 @@ class AdminPubProductInfo(admin.ModelAdmin):
     list_filter = ('supplier',)
     search_fields = ['catalog_nb','product_desc']
     change_list_template = "admin/change_list_filter_sidebar.html"
-
+    inlines = [PubProductNameInline,PubTechProdResultInline]
     def url_link(self, obj):
         return '<a href="%s">%s</a>' % (obj.url,obj.url)
     url_link.allow_tags = True
 
 @admin.register(PubProductName)
 class AdminPubProductName(admin.ModelAdmin):
-    pass
+    list_display =('name','prod','use','citations','score')
+    
+
+
+
 
 

@@ -8,10 +8,10 @@
 # Also note: You'll have to insert the output of 'django-admin.py sqlcustom [app_label]'
 # into your database.
 from __future__ import unicode_literals
-
+from __future__ import division
 from django.db import models
-
-
+import math
+import re
 class PubProductInfo(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     supplier = models.ForeignKey('PubSupplierList', blank=True, null=True)
@@ -47,7 +47,31 @@ class PubProductName(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     prod = models.ForeignKey(PubProductInfo, blank=True, null=True)
     name = models.CharField(max_length=40, blank=True)
-
+    def use(self):
+        """
+        Return the number of publications using this product
+        """
+        return self.prod.pubtechprodresult_set.all().values('doc').distinct().count()
+    use.short_description = 'Usage (number of papers citing product)'
+    
+    def citations(self):
+        citations = 0
+        papers = self.prod.pubtechprodresult_set.all().values('doc_id').distinct()
+        for paper in papers.iterator():
+           cite_count = ScinPubMeta.objects.get(id=paper['doc_id']).citation
+           if not cite_count:
+               continue
+           citations+=cite_count
+        return citations   
+    citations.short_description = 'Total number of citations of papers using product'
+    
+    def score(self):
+       score = 0 if self.use()==0 else math.log(self.citations() + self.use()*math.e) 
+       return '%.2f' % (score)
+        
+    
+    score.short_description = 'Ranking score'
+    
     class Meta:
         managed = False
         db_table = 'pub_product_name'
@@ -109,6 +133,12 @@ class PubTechProdResult(models.Model):
         managed = False
         db_table = 'pub_tech_prod_result'
         verbose_name = 'Search List'
+        
+    
+    
+    def __unicode__(self):
+        return u'%s' % self.figure
+    
     
 
 class PubTechniqueList(models.Model):
@@ -198,8 +228,30 @@ class ScinPubMeta(models.Model):
         managed = False
         db_table = 'scin_pub_meta'
         verbose_name = 'Publication'
-
-
+    def immuno_index(self):
+        imunoindex ={}
+        result='<ul>'
+        for fig in self.scinpubfigure_set.all(): 
+            for tech in PubTechniqueList.objects.order_by('technique_group').iterator():
+                if  bool(re.compile("\W"+tech.alternative+"\W").search(fig.content.lower())):
+                    if getattr(fig,'previous',None) ==tech.technique_group:
+                        continue
+                    else:
+                        setattr(fig,'previous',tech.technique_group)                        
+                        if tech.technique_group in imunoindex:
+                            imunoindex[tech.technique_group]=imunoindex[tech.technique_group]+1
+                        else:
+                            imunoindex[tech.technique_group]=1 
+        
+        value_sum = sum(imunoindex.values())                                         
+        for key,value in imunoindex.iteritems():            
+            index = value/value_sum           
+            index = '%.2f' % (index * 100 )         
+            result+='<li>'+key+'|'+str(index)+'%</li>'  
+        result = result+'</ul>'   
+        return result
+    immuno_index.allow_tags = True
+    
 class ScinPubResult(models.Model):
     id = models.IntegerField(primary_key=True)  # AutoField?
     section_id = models.IntegerField()

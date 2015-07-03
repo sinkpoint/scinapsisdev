@@ -134,26 +134,32 @@
 <script type="text/javascript">
 // Type ahead / suggestion function
 jQuery(document).ready(function() {
- // Initializes the data source for the suggestion engine
- var productName = new Bloodhound({
-  datumTokenizer: Bloodhound.tokenizers.obj.whitespace,
+ /* Initializes the data source for the suggestion engine
+  Data is prefetched on page load and cached in browser storage
+  If no results are found in cached results, the remote url is queried for
+  more results.
+ */
+  var productName = new Bloodhound({
+  datumTokenizer:  function (d) { return Bloodhound.tokenizers.whitespace(d.name); },
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-  prefetch: '/typeahead-search/', // Important for browser caching to increase speed
-  remote: {
-    url: '/typeahead-search/?query=%QUERY',
-    wildcard: '%QUERY'
-  }
+  prefetch: {url:'/typeahead-search/', // Important for browser caching to increase speed
+            ttl: 0,
+            filter: function (list) {            
+                return $.map(list, function (object) { return { name: object.name }; });
+            }
+          },
+
 });
  
 $('.typeahead').typeahead({
   hint: true,
   highlight: true,
-  minLength: 2,
+  minLength: 1,
   },
   {name: 'name',
   display: 'name',
-  source: productName,
-  limit: 100,
+  source: productName.ttAdapter(),
+  limit: 10,
   
 });  
 

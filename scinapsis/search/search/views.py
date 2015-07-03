@@ -24,6 +24,7 @@ def typeahead_view(request):
         else:
             "Prefetch data if no query is provided to increase speed"
             product = PubProductName.objects.all().values('name','id')
+            print product
             return JsonResponse(list(product),safe=False)
 
 def _get_user_info(req):
@@ -152,7 +153,6 @@ def dashboard(request):
     user = _get_user_info(request)
     if not user or user.is_anonymous():
         return redirect('login')
-
     pass_data = {'user': user}
 
     q_input, data = _search_query_constructor(request)
