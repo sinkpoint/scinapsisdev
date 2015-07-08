@@ -12,18 +12,23 @@
 
         <h3>Login to your account</h3>
 
-        <p>
-            We are currently undergoing closed beta. <br />
-            If you would like to try out Scinapsis, <a href="http://www.scinapsis.com/contact/">contact us</a> to gain access.
-        </p>
         <form class="login" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
             {% bootstrap_form form %}
+            <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
 
+            <p>
             <button class="btn btn-lg btn-success btn-block" type="submit">{% trans "Sign In" %}</button>
+            OR 
+            <a class="btn btn-lg btn-warning btn-block" href="{{ signup_url }}">Join</a>
+            </p>
+
+            
+            
 
         </form>
 {% endblock %}
